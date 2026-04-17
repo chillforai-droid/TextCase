@@ -525,6 +525,51 @@
 <div id="contactModal" class="modal"><div class="modal-content"><span class="close" id="closeContact">&times;</span><h3>Contact Us</h3><p>Email: support@textcase.in</p><p>Response: Within 24 hours</p></div></div>
 
 <script>
+
+async function runAI(action) {
+    let input = document.getElementById("inputText").value;
+
+    if (!input.trim()) {
+        showToast("⚠️ Enter text first");
+        return;
+    }
+
+    let box = document.getElementById("aiResultBox");
+    box.style.display = "block";
+    box.innerHTML = "🤖 AI processing...";
+
+    try {
+        const res = await fetch("/api/chat", {   // ✅ IMPORTANT
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                messages: [
+                    {
+                        role: "user",
+                        content: `${action}: ${input}`
+                    }
+                ]
+            })
+        });
+
+        const data = await res.json();
+
+        box.innerHTML = `
+            <div class="result-item">
+                <div class="result-label">AI Result:</div>
+                <div class="result-text">${data.reply}</div>
+                <button class="copy-single" onclick="copySingleResult('${data.reply.replace(/'/g, "\\'")}')">📋 Copy</button>
+            </div>
+        `;
+
+    } catch (err) {
+        box.innerHTML = "❌ Error loading AI";
+    }
+}
+
+    
     let currentConvertedText = '';
     let currentConversionType = '';
 
