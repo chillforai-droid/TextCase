@@ -396,6 +396,20 @@
         <label style="font-weight:600; margin-bottom:8px; display:block;">📝 Enter your text below:</label>
         <textarea id="inputText" rows="5" placeholder="Type or paste your text here...&#10;Example: hello world, how are you?">Hello World, This is a sample text for case converter! Share this tool with your friends.</textarea>
 
+        <div class="tool-card">
+    <h3>🤖 AI Smart Tools</h3>
+
+    <div class="button-grid">
+        <button class="btn" onclick="runAI('Fix grammar')">✍️ Fix Grammar</button>
+        <button class="btn" onclick="runAI('Rewrite better')">✨ Rewrite</button>
+        <button class="btn" onclick="runAI('Summarize')">📄 Summarize</button>
+        <button class="btn" onclick="runAI('Make professional')">💼 Professional</button>
+        <button class="btn" onclick="runAI('Make SEO optimized')">🚀 SEO Optimize</button>
+    </div>
+
+    <div id="aiResultBox" class="results-area" style="display:none;"></div>
+        </div>
+
         <div class="button-grid">
             <button class="btn" onclick="convertTo('upper')">🔠 UPPERCASE</button>
             <button class="btn" onclick="convertTo('lower')">🔡 lowercase</button>
