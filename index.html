@@ -1,2 +1,712 @@
-{
-  "code": "<!DOCTYPE html>\n<html lang=\"hi-IN\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover\">\n    <meta name=\"robots\" content=\"index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1\">\n    <meta name=\"googlebot\" content=\"index, follow\">\n    <meta name=\"bingbot\" content=\"index, follow\">\n    \n    <title>Case Converter - Uppercase to Lowercase & Title Case Tool (Free)</title>\n    <meta name=\"description\" content=\"Free online case converter tool. Convert text to uppercase, lowercase, title case, sentence case, and more. One-click copy, share, and download. Used by 10,000+ writers daily.\">\n    <meta name=\"keywords\" content=\"case converter, text converter, uppercase to lowercase, title case converter, sentence case, text transformation, online text tool\">\n    <meta name=\"author\" content=\"Case Converter Tool\">\n    \n    <link rel=\"canonical\" href=\"https://textcase.in/\">\n    \n    <!-- Open Graph -->\n    <meta property=\"og:type\" content=\"website\">\n    <meta property=\"og:title\" content=\"Free Case Converter - Share & Download Tool\">\n    <meta property=\"og:description\" content=\"Transform any text instantly between 7 different cases. Free, fast, and private. Share with friends!\">\n    <meta property=\"og:image\" content=\"https://textcase.in/og-image.jpg\">\n    \n    <!-- Twitter Card -->\n    <meta name=\"twitter:card\" content=\"summary_large_image\">\n    <meta name=\"twitter:title\" content=\"Free Case Converter Tool\">\n    <meta name=\"twitter:description\" content=\"Convert text to uppercase, lowercase, title case in one click. Share and download results!\">\n    \n    <!-- Schema Markup -->\n    <script type=\"application/ld+json\">\n    {\n        \"@context\": \"https://schema.org\",\n        \"@type\": \"WebApplication\",\n        \"name\": \"Case Converter Tool\",\n        \"description\": \"Free online text case converter tool with share and download features\",\n        \"url\": \"https://textcase.in/\",\n        \"applicationCategory\": \"Utility\",\n        \"operatingSystem\": \"All\",\n        \"offers\": {\"@type\": \"Offer\", \"price\": \"0\", \"priceCurrency\": \"USD\"}\n    }\n    </script>\n\n    <style>\n        * {\n            margin: 0;\n            padding: 0;\n            box-sizing: border-box;\n        }\n\n        body {\n            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;\n            background: linear-gradient(135deg, #f5f7fa 0%, #e9edf2 100%);\n            color: #1a2a3a;\n            padding: 20px;\n            line-height: 1.6;\n        }\n\n        .container {\n            max-width: 1200px;\n            margin: 0 auto;\n        }\n\n        .header {\n            text-align: center;\n            margin-bottom: 30px;\n        }\n\n        .header h1 {\n            font-size: 2.2rem;\n            background: linear-gradient(135deg, #1e3c72, #2b4c7c);\n            -webkit-background-clip: text;\n            background-clip: text;\n            color: transparent;\n            margin-bottom: 10px;\n        }\n\n        .header p {\n            color: #2c3e50;\n            font-size: 1.1rem;\n        }\n\n        .tool-card {\n            background: white;\n            border-radius: 24px;\n            box-shadow: 0 20px 35px -10px rgba(0,0,0,0.1);\n            padding: 30px;\n            margin-bottom: 40px;\n        }\n\n        textarea {\n            width: 100%;\n            padding: 18px;\n            font-size: 1rem;\n            font-family: monospace;\n            border: 2px solid #dce4ec;\n            border-radius: 16px;\n            resize: vertical;\n            transition: all 0.3s ease;\n            background: #fefefe;\n        }\n\n        textarea:focus {\n            outline: none;\n            border-color: #2b4c7c;\n            box-shadow: 0 0 0 3px rgba(43,76,124,0.2);\n        }\n\n        .button-grid {\n            display: grid;\n            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));\n            gap: 12px;\n            margin: 25px 0;\n        }\n\n        .btn {\n            background: #2c3e50;\n            color: white;\n            border: none;\n            padding: 12px 8px;\n            font-size: 0.9rem;\n            font-weight: 600;\n            border-radius: 40px;\n            cursor: pointer;\n            transition: all 0.2s ease;\n            box-shadow: 0 2px 5px rgba(0,0,0,0.1);\n        }\n\n        .btn:hover {\n            background: #1a2a3a;\n            transform: translateY(-2px);\n        }\n\n        .btn-copy {\n            background: #27ae60;\n        }\n\n        .btn-copy:hover {\n            background: #1e8a4d;\n        }\n\n        .btn-share {\n            background: #3498db;\n        }\n\n        .btn-share:hover {\n            background: #2980b9;\n        }\n\n        .btn-download {\n            background: #e67e22;\n        }\n\n        .btn-download:hover {\n            background: #d35400;\n        }\n\n        .action-buttons {\n            display: flex;\n            gap: 12px;\n            justify-content: center;\n            margin-top: 20px;\n            flex-wrap: wrap;\n        }\n\n        .results-area {\n            background: #f8fafc;\n            border-radius: 20px;\n            padding: 20px;\n            margin-top: 20px;\n            border: 1px solid #e2e8f0;\n        }\n\n        .result-item {\n            background: white;\n            border-radius: 14px;\n            padding: 14px 18px;\n            margin-bottom: 12px;\n            display: flex;\n            justify-content: space-between;\n            align-items: center;\n            flex-wrap: wrap;\n            gap: 12px;\n            border-left: 5px solid #2b4c7c;\n            box-shadow: 0 1px 3px rgba(0,0,0,0.05);\n        }\n\n        .result-label {\n            font-weight: 700;\n            color: #1e3c72;\n            min-width: 130px;\n        }\n\n        .result-text {\n            font-family: monospace;\n            word-break: break-word;\n            flex: 1;\n            background: #f1f5f9;\n            padding: 8px 12px;\n            border-radius: 12px;\n            max-height: 150px;\n            overflow-y: auto;\n        }\n\n        .copy-single, .share-single {\n            background: #3498db;\n            border: none;\n            padding: 6px 14px;\n            border-radius: 30px;\n            color: white;\n            cursor: pointer;\n            font-size: 0.75rem;\n            margin-left: 5px;\n        }\n\n        .share-single {\n            background: #1abc9c;\n        }\n\n        /* Texly Promotion Box */\n        .texly-promo {\n            text-align: center;\n            margin: 30px 0;\n            padding: 25px 20px;\n            background: linear-gradient(135deg, #1e3c72 0%, #2b4c7c 100%);\n            border-radius: 24px;\n            color: white;\n            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);\n        }\n        \n        .texly-promo h3 {\n            font-size: 1.5rem;\n            margin-bottom: 10px;\n        }\n        \n        .texly-promo p {\n            margin-bottom: 15px;\n            opacity: 0.95;\n        }\n        \n        .texly-button {\n            display: inline-block;\n            background: white;\n            color: #1e3c72;\n            padding: 12px 28px;\n            text-decoration: none;\n            border-radius: 40px;\n            font-weight: 700;\n            transition: all 0.3s ease;\n            box-shadow: 0 4px 10px rgba(0,0,0,0.2);\n        }\n        \n        .texly-button:hover {\n            transform: translateY(-2px);\n            background: #f0f4f8;\n        }\n\n        /* Share Modal */\n        .share-modal {\n            display: none;\n            position: fixed;\n            top: 0; left: 0;\n            width: 100%; height: 100%;\n            background: rgba(0,0,0,0.8);\n            justify-content: center;\n            align-items: center;\n            z-index: 1001;\n        }\n\n        .share-modal-content {\n            background: white;\n            max-width: 400px;\n            width: 90%;\n            padding: 25px;\n            border-radius: 28px;\n            text-align: center;\n        }\n\n        .share-buttons {\n            display: flex;\n            gap: 15px;\n            justify-content: center;\n            margin: 20px 0;\n            flex-wrap: wrap;\n        }\n\n        .share-icon {\n            display: inline-block;\n            padding: 12px 20px;\n            border-radius: 50px;\n            text-decoration: none;\n            color: white;\n            font-weight: bold;\n            cursor: pointer;\n        }\n\n        .whatsapp { background: #25D366; }\n        .telegram { background: #0088cc; }\n        .twitter { background: #1DA1F2; }\n        .facebook { background: #1877F2; }\n        .copy-link { background: #2c3e50; }\n\n        /* SEO Content */\n        .seo-content {\n            background: white;\n            border-radius: 24px;\n            padding: 30px;\n            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);\n            margin-bottom: 30px;\n        }\n\n        .seo-content h2, .seo-content h3 {\n            color: #1e3c72;\n            margin: 20px 0 10px 0;\n        }\n\n        .seo-content p {\n            margin-bottom: 15px;\n            color: #2d3e50;\n        }\n\n        .seo-content ul {\n            margin-left: 25px;\n            margin-bottom: 20px;\n        }\n\n        .footer {\n            text-align: center;\n            padding: 25px;\n            background: white;\n            border-radius: 20px;\n            font-size: 0.85rem;\n        }\n\n        .footer a {\n            color: #2b4c7c;\n            text-decoration: none;\n            margin: 0 12px;\n        }\n\n        .modal {\n            display: none;\n            position: fixed;\n            top: 0; left: 0;\n            width: 100%; height: 100%;\n            background: rgba(0,0,0,0.7);\n            justify-content: center;\n            align-items: center;\n            z-index: 1000;\n        }\n\n        .modal-content {\n            background: white;\n            max-width: 500px;\n            width: 90%;\n            padding: 25px;\n            border-radius: 28px;\n            max-height: 80%;\n            overflow-y: auto;\n        }\n\n        .close {\n            float: right;\n            font-size: 28px;\n            font-weight: bold;\n            cursor: pointer;\n        }\n\n        @media (max-width: 640px) {\n            .button-grid {\n                grid-template-columns: repeat(2, 1fr);\n            }\n            .result-item {\n                flex-direction: column;\n                align-items: flex-start;\n            }\n            .header h1 {\n                font-size: 1.6rem;\n            }\n            .action-buttons {\n                flex-direction: column;\n            }\n            .texly-promo h3 {\n                font-size: 1.2rem;\n            }\n        }\n    </style>\n</head>\n<body>\n\n<div class=\"container\">\n    <div class=\"header\">\n        <h1>🔄 Free Case Converter - Share & Download Tool</h1>\n        <p>Transform any text to 7 different cases instantly • Share results with friends • Download as text file</p>\n    </div>\n\n    <div class=\"tool-card\">\n        <label style=\"font-weight:600; margin-bottom:8px; display:block;\">📝 Enter your text below:</label>\n        <textarea id=\"inputText\" rows=\"5\" placeholder=\"Type or paste your text here...&#10;Example: hello world, how are you?\">Hello World, This is a sample text for case converter! Share this tool with your friends.</textarea>\n\n        <div class=\"tool-card\">\n    <h3>🤖 AI Smart Tools</h3>\n\n    <div class=\"button-grid\">\n        <button class=\"btn\" onclick=\"runAI('Fix grammar')\">✍️ Fix Grammar</button>\n        <button class=\"btn\" onclick=\"runAI('Rewrite better')\">✨ Rewrite</button>\n        <button class=\"btn\" onclick=\"runAI('Summarize')\">📄 Summarize</button>\n        <button class=\"btn\" onclick=\"runAI('Make professional')\">💼 Professional</button>\n        <button class=\"btn\" onclick=\"runAI('Make SEO optimized')\">🚀 SEO Optimize</button>\n    </div>\n\n    <div id=\"aiResultBox\" class=\"results-area\" style=\"display:none;\"></div>\n        </div>\n\n        <div class=\"button-grid\">\n            <button class=\"btn\" onclick=\"convertTo('upper')\">🔠 UPPERCASE</button>\n            <button class=\"btn\" onclick=\"convertTo('lower')\">🔡 lowercase</button>\n            <button class=\"btn\" onclick=\"convertTo('title')\">📘 Title Case</button>\n            <button class=\"btn\" onclick=\"convertTo('sentence')\">📄 Sentence case</button>\n            <button class=\"btn\" onclick=\"convertTo('capitalize')\">🔤 Capitalized Case</button>\n            <button class=\"btn\" onclick=\"convertTo('alternate')\">🔄 aLtErNaTiNg</button>\n            <button class=\"btn\" onclick=\"convertTo('inverse')\">🪞 iNVERSE cASE</button>\n        </div>\n\n        <div class=\"action-buttons\">\n            <button class=\"btn btn-copy\" onclick=\"copyAllResults()\">📋 Copy All Results</button>\n            <button class=\"btn btn-share\" onclick=\"openShareModal()\">📤 Share This Tool</button>\n            <button class=\"btn btn-download\" onclick=\"downloadAllResults()\">💾 Download Results (.txt)</button>\n        </div>\n\n        <div class=\"results-area\" id=\"resultsArea\">\n            <div style=\"text-align:center; color:#7f8c8d;\">✨ Click any button above to convert text instantly ✨<br>📤 Then share
+<!DOCTYPE html>
+<html lang="hi-IN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta name="googlebot" content="index, follow">
+    <meta name="bingbot" content="index, follow">
+    
+    <title>Case Converter: Uppercase to Lowercase & Title Case Tool (Free)</title>
+    <meta name="description" content="Free online case converter tool. Convert text to uppercase, lowercase, title case, sentence case, and more. One-click copy, share, and download. Used by 10,000+ writers daily.">
+    <meta name="keywords" content="case converter, text converter, uppercase to lowercase, title case converter, sentence case, text transformation, online text tool">
+    <meta name="author" content="Texly Online">
+    
+    <link rel="canonical" href="https://www.texlyonline.in/case-converter">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Free Case Converter - Share & Download Tool">
+    <meta property="og:description" content="Transform any text instantly between 7 different cases. Free, fast, and private. Share with friends!">
+    <meta property="og:image" content="https://www.texlyonline.in/og-case-converter.jpg">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Free Case Converter Tool">
+    <meta name="twitter:description" content="Convert text to uppercase, lowercase, title case in one click. Share and download results!">
+    
+    <!-- Schema Markup -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Case Converter Tool",
+        "description": "Free online text case converter tool with share and download features",
+        "url": "https://www.texlyonline.in/case-converter",
+        "applicationCategory": "Utility",
+        "operatingSystem": "All",
+        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+    }
+    </script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e9edf2 100%);
+            color: #1a2a3a;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            background: linear-gradient(135deg, #1e3c72, #2b4c7c);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #2c3e50;
+            font-size: 1.1rem;
+        }
+
+        .tool-card {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 35px -10px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 18px;
+            font-size: 1rem;
+            font-family: monospace;
+            border: 2px solid #dce4ec;
+            border-radius: 16px;
+            resize: vertical;
+            transition: all 0.3s ease;
+            background: #fefefe;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #2b4c7c;
+            box-shadow: 0 0 0 3px rgba(43,76,124,0.2);
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+            margin: 25px 0;
+        }
+
+        .btn {
+            background: #2c3e50;
+            color: white;
+            border: none;
+            padding: 12px 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .btn:hover {
+            background: #1a2a3a;
+            transform: translateY(-2px);
+        }
+
+        .btn-copy {
+            background: #27ae60;
+        }
+
+        .btn-copy:hover {
+            background: #1e8a4d;
+        }
+
+        .btn-share {
+            background: #3498db;
+        }
+
+        .btn-share:hover {
+            background: #2980b9;
+        }
+
+        .btn-download {
+            background: #e67e22;
+        }
+
+        .btn-download:hover {
+            background: #d35400;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .results-area {
+            background: #f8fafc;
+            border-radius: 20px;
+            padding: 20px;
+            margin-top: 20px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .single-result {
+            background: white;
+            border-radius: 14px;
+            padding: 14px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            border-left: 5px solid #2b4c7c;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .result-label {
+            font-weight: 700;
+            color: #1e3c72;
+            min-width: 130px;
+        }
+
+        .result-text {
+            font-family: monospace;
+            word-break: break-word;
+            flex: 1;
+            background: #f1f5f9;
+            padding: 8px 12px;
+            border-radius: 12px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .copy-single, .share-single {
+            background: #3498db;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 30px;
+            color: white;
+            cursor: pointer;
+            font-size: 0.75rem;
+            margin-left: 5px;
+        }
+
+        .share-single {
+            background: #1abc9c;
+        }
+
+        /* Texly Promotion Box */
+        .texly-promo {
+            text-align: center;
+            margin: 30px 0;
+            padding: 25px 20px;
+            background: linear-gradient(135deg, #0b2b44 0%, #1a4a6f 100%);
+            border-radius: 24px;
+            color: white;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+        }
+        
+        .texly-promo:hover {
+            transform: translateY(-3px);
+        }
+
+        .texly-promo h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .texly-promo p {
+            margin-bottom: 15px;
+            opacity: 0.95;
+            font-size: 1rem;
+        }
+        
+        .texly-button {
+            display: inline-block;
+            background: #ffb74d;
+            color: #0b2b44;
+            padding: 12px 28px;
+            text-decoration: none;
+            border-radius: 40px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            font-size: 1rem;
+        }
+        
+        .texly-button:hover {
+            transform: translateY(-2px);
+            background: #ffa726;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+            color: #0b2b44;
+        }
+
+        /* Share Modal */
+        .share-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+        }
+
+        .share-modal-content {
+            background: white;
+            max-width: 400px;
+            width: 90%;
+            padding: 25px;
+            border-radius: 28px;
+            text-align: center;
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .share-icon {
+            display: inline-block;
+            padding: 12px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .whatsapp { background: #25D366; }
+        .telegram { background: #0088cc; }
+        .twitter { background: #1DA1F2; }
+        .facebook { background: #1877F2; }
+        .copy-link { background: #2c3e50; }
+
+        /* SEO & Legal Pages Content */
+        .seo-content, .legal-content {
+            background: white;
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+
+        .seo-content h2, .seo-content h3, .legal-content h2, .legal-content h3 {
+            color: #1e3c72;
+            margin: 20px 0 10px 0;
+        }
+
+        .seo-content p, .legal-content p {
+            margin-bottom: 15px;
+            color: #2d3e50;
+        }
+
+        .seo-content ul, .legal-content ul {
+            margin-left: 25px;
+            margin-bottom: 20px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 25px;
+            background: white;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+
+        .footer a {
+            color: #2b4c7c;
+            text-decoration: none;
+            margin: 0 12px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            max-width: 500px;
+            width: 90%;
+            padding: 25px;
+            border-radius: 28px;
+            max-height: 80%;
+            overflow-y: auto;
+        }
+
+        .close {
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        @media (max-width: 640px) {
+            .button-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .single-result {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .header h1 {
+                font-size: 1.6rem;
+            }
+            .action-buttons {
+                flex-direction: column;
+            }
+            .texly-promo h3 {
+                font-size: 1.2rem;
+            }
+            .texly-button {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>🔄 Free Case Converter - Uppercase to Lowercase & Title Case Tool</h1>
+        <p>Transform any text to 7 different cases instantly • Share results with friends • Download as text file</p>
+    </div>
+
+    <div class="tool-card">
+        <label style="font-weight:600; margin-bottom:8px; display:block;">📝 Enter your text below:</label>
+        <textarea id="inputText" rows="5" placeholder="Type or paste your text here...&#10;Example: hello world, how are you?">Hello World, This is a sample text for case converter! Share this tool with your friends.</textarea>
+
+        <div class="button-grid">
+            <button class="btn" onclick="convertTo('upper')">🔠 UPPERCASE</button>
+            <button class="btn" onclick="convertTo('lower')">🔡 lowercase</button>
+            <button class="btn" onclick="convertTo('title')">📘 Title Case</button>
+            <button class="btn" onclick="convertTo('sentence')">📄 Sentence case</button>
+            <button class="btn" onclick="convertTo('capitalize')">🔤 Capitalized Case</button>
+            <button class="btn" onclick="convertTo('alternate')">🔄 aLtErNaTiNg</button>
+            <button class="btn" onclick="convertTo('inverse')">🪞 iNVERSE cASE</button>
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn btn-copy" onclick="copyCurrentResult()">📋 Copy Current Result</button>
+            <button class="btn btn-share" onclick="openShareModal()">📤 Share This Tool</button>
+            <button class="btn btn-download" onclick="downloadCurrentResult()">💾 Download Result (.txt)</button>
+        </div>
+
+        <div class="results-area" id="resultsArea">
+            <div style="text-align:center; color:#7f8c8d;">✨ Click any button above to convert text instantly ✨<br>📤 Then share or download your converted text</div>
+        </div>
+    </div>
+
+    <!-- Texly Promotion Box -->
+    <div class="texly-promo">
+        <h3>🚀 Explore 100+ Free Tools at Texly</h3>
+        <p>AI Tools • Text Utilities • Generators — All 100% Free, No Signup, Privacy First</p>
+        <a href="https://www.texlyonline.in" class="texly-button" target="_blank" rel="noopener noreferrer">Visit Texly Tool Hub →</a>
+    </div>
+
+    <!-- SEO Content Block for Adsense -->
+    <div class="seo-content">
+        <h2>📖 What is a Case Converter?</h2>
+        <p>A case converter is an essential online tool for writers, editors, developers, and students. It allows you to instantly transform text between different capitalization styles like <strong>UPPERCASE</strong>, <strong>lowercase</strong>, <strong>Title Case</strong>, <strong>Sentence case</strong>, and more. Whether you need to fix accidental caps lock, format headings, or prepare content for social media, this free tool saves time and ensures consistency.</p>
+        
+        <h3>✨ Why Use Our Case Converter?</h3>
+        <ul>
+            <li>⚡ Instant conversion with 7 different case styles.</li>
+            <li>📋 One-click copy & share any transformed version.</li>
+            <li>💾 Download results as a .txt file.</li>
+            <li>🔒 100% client-side – your text never leaves your device.</li>
+            <li>📱 Fully responsive on mobile, tablet, and desktop.</li>
+        </ul>
+        
+        <h3>🧠 How Different Cases Work</h3>
+        <p><strong>UPPERCASE:</strong> Converts every letter to capital letters. Ideal for emphasis or acronyms.<br>
+        <strong>lowercase:</strong> All letters become small, perfect for cleaning up text.<br>
+        <strong>Title Case:</strong> Capitalizes main words (useful for headlines, book titles).<br>
+        <strong>Sentence case:</strong> Only the first letter of the first word is capitalized (standard for sentences).<br>
+        <strong>Capitalized Case:</strong> Every word's first letter capitalized.<br>
+        <strong>aLtErNaTiNg:</strong> Fun pattern of alternating case.<br>
+        <strong>iNVERSE cASE:</strong> Reverses the current case of each character.</p>
+        
+        <h3>📈 Who Uses This Tool?</h3>
+        <p>Content creators, bloggers, social media managers, programmers (for formatting strings), students preparing essays, and anyone dealing with text formatting. Over 10,000 daily users trust our tool for its speed and privacy.</p>
+    </div>
+
+    <!-- Legal Pages Content for Adsense Compliance -->
+    <div class="legal-content" id="privacy-policy">
+        <h2>🔒 Privacy Policy</h2>
+        <p><strong>Effective Date:</strong> January 1, 2025</p>
+        <p>At Texly Online ("we", "our", "us"), we are committed to protecting your privacy. Our Case Converter tool processes all text directly in your browser using JavaScript. We do not store, transmit, or have access to any text you enter. No personal data is collected, logged, or shared with third parties. We do not use cookies for this tool. For any concerns, please contact us via our contact page.</p>
+    </div>
+
+    <div class="legal-content" id="terms-of-use">
+        <h2>📜 Terms of Use</h2>
+        <p>By using this Case Converter tool ("Service"), you agree to the following terms: This Service is provided "as is" without warranties of any kind. You are solely responsible for the text you submit and the way you use the converted output. You may not use this tool for any illegal purposes. We reserve the right to modify or discontinue the Service at any time without notice.</p>
+    </div>
+
+    <div class="legal-content" id="disclaimer">
+        <h2>⚠️ Disclaimer</h2>
+        <p>While we strive to provide accurate conversions, we do not guarantee that the results are error-free or suitable for your specific purpose. The output is generated by automated client-side scripts. For critical applications, please verify the results manually. We are not liable for any damages arising from the use or inability to use this tool.</p>
+    </div>
+
+    <div class="footer">
+        <p>© 2025 Case Converter Tool | A product of <a href="https://www.texlyonline.in" target="_blank">Texly Free Tool Hub</a></p>
+        <p>
+            <a href="#privacy-policy">Privacy Policy</a> | 
+            <a href="#terms-of-use">Terms of Use</a> |
+            <a href="#disclaimer">Disclaimer</a> | 
+            <a href="#">Contact</a>
+        </p>
+    </div>
+</div>
+
+<!-- Share Modal (Tool Sharing) -->
+<div id="shareModal" class="share-modal">
+    <div class="share-modal-content">
+        <span style="float:right; font-size:28px; cursor:pointer;" onclick="closeShareModal()">&times;</span>
+        <h3>📢 Share this Case Converter</h3>
+        <p>Help your friends convert text easily!</p>
+        <div class="share-buttons">
+            <a href="#" id="whatsappShare" class="share-icon whatsapp" target="_blank">WhatsApp</a>
+            <a href="#" id="telegramShare" class="share-icon telegram" target="_blank">Telegram</a>
+            <a href="#" id="twitterShare" class="share-icon twitter" target="_blank">Twitter</a>
+            <a href="#" id="facebookShare" class="share-icon facebook" target="_blank">Facebook</a>
+            <button id="copyLinkBtn" class="share-icon copy-link">Copy Link</button>
+        </div>
+        <p style="font-size:12px; margin-top:15px;">Share the tool: https://www.texlyonline.in/case-converter</p>
+    </div>
+</div>
+
+<!-- Generic Message Modal for Alerts/Copy -->
+<div id="messageModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeMessageModal()">&times;</span>
+        <p id="modalMessage" style="font-size:1.2rem; text-align:center;">✅ Copied to clipboard!</p>
+    </div>
+</div>
+
+<script>
+    // Store current conversion result (single result mode)
+    let currentResultLabel = "";
+    let currentResultText = "";
+
+    // ---------- CASE CONVERSION LOGIC (Single Result Mode) ----------
+    function convertTo(caseType) {
+        let input = document.getElementById('inputText').value;
+        if (!input.trim()) {
+            alert("Please enter some text to convert.");
+            return;
+        }
+        let output = "";
+        let label = "";
+        
+        switch(caseType) {
+            case 'upper':
+                output = input.toUpperCase();
+                label = "UPPERCASE";
+                break;
+            case 'lower':
+                output = input.toLowerCase();
+                label = "lowercase";
+                break;
+            case 'title':
+                output = input.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+                label = "Title Case";
+                break;
+            case 'sentence':
+                output = input.toLowerCase().replace(/(^\s*\w|[.!?]\s*\w)/g, c => c.toUpperCase());
+                label = "Sentence case";
+                break;
+            case 'capitalize':
+                output = input.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+                label = "Capitalized Case";
+                break;
+            case 'alternate':
+                output = input.split('').map((ch, idx) => 
+                    idx % 2 === 0 ? ch.toUpperCase() : ch.toLowerCase()
+                ).join('');
+                label = "aLtErNaTiNg";
+                break;
+            case 'inverse':
+                output = input.split('').map(ch => 
+                    ch === ch.toUpperCase() ? ch.toLowerCase() : ch.toUpperCase()
+                ).join('');
+                label = "iNVERSE cASE";
+                break;
+            default: 
+                output = input;
+                label = "Original";
+        }
+        
+        currentResultLabel = label;
+        currentResultText = output;
+        displaySingleResult(label, output);
+    }
+
+    function displaySingleResult(label, text) {
+        const resultsDiv = document.getElementById('resultsArea');
+        if (!resultsDiv) return;
+        
+        const escapedLabel = escapeHtml(label);
+        const escapedText = escapeHtml(text);
+        
+        const html = `
+            <div class="single-result">
+                <div class="result-label">${escapedLabel}</div>
+                <div class="result-text" id="currentResultText">${escapedText}</div>
+                <div>
+                    <button class="copy-single" onclick="copyCurrentResult()">📋 Copy</button>
+                    <button class="share-single" onclick="shareCurrentResult()">📤 Share</button>
+                </div>
+            </div>
+        `;
+        resultsDiv.innerHTML = html;
+    }
+
+    function escapeHtml(str) {
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+            return c;
+        });
+    }
+
+    function copyCurrentResult() {
+        if (!currentResultText) {
+            alert("No result to copy. Please convert some text first.");
+            return;
+        }
+        navigator.clipboard.writeText(currentResultText).then(() => {
+            showMessageModal("✅ Copied: " + currentResultText.substring(0, 50) + (currentResultText.length > 50 ? "..." : ""));
+        }).catch(() => {
+            alert("Unable to copy. Manually select text.");
+        });
+    }
+    
+    function shareCurrentResult() {
+        if (!currentResultText) {
+            alert("No result to share. Please convert some text first.");
+            return;
+        }
+        if (navigator.share) {
+            navigator.share({
+                title: `Converted Text (${currentResultLabel})`,
+                text: currentResultText,
+            }).catch(err => console.log("Share cancelled", err));
+        } else {
+            navigator.clipboard.writeText(currentResultText).then(() => {
+                showMessageModal("📋 Text copied! You can paste it anywhere to share.");
+            });
+        }
+    }
+
+    function downloadCurrentResult() {
+        if (!currentResultText) {
+            alert("Nothing to download. Convert some text first.");
+            return;
+        }
+        const content = `${currentResultLabel}:\n${currentResultText}`;
+        const blob = new Blob([content], {type: "text/plain"});
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.href = url;
+        link.download = `case_converter_${currentResultLabel.toLowerCase().replace(/\s/g, '_')}.txt`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        showMessageModal("✅ Download started!");
+    }
+
+    // ---------- SHARE MODAL (Tool share) ----------
+    function openShareModal() {
+        const modal = document.getElementById('shareModal');
+        if (modal) modal.style.display = 'flex';
+        const toolUrl = "https://www.texlyonline.in/case-converter";
+        const shareText = "Check out this free Case Converter! Transform text to uppercase, lowercase, title case, and more. 🔄";
+        const encodedUrl = encodeURIComponent(toolUrl);
+        const encodedShareText = encodeURIComponent(shareText);
+        
+        document.getElementById('whatsappShare').href = `https://wa.me/?text=${encodedShareText}%20${encodedUrl}`;
+        document.getElementById('telegramShare').href = `https://t.me/share/url?url=${encodedUrl}&text=${encodedShareText}`;
+        document.getElementById('twitterShare').href = `https://twitter.com/intent/tweet?text=${encodedShareText}&url=${encodedUrl}`;
+        document.getElementById('facebookShare').href = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
+        
+        const copyLinkBtn = document.getElementById('copyLinkBtn');
+        copyLinkBtn.onclick = function(e) {
+            e.preventDefault();
+            navigator.clipboard.writeText(toolUrl).then(() => {
+                showMessageModal("🔗 Tool link copied to clipboard!");
+                closeShareModal();
+            }).catch(() => alert("Unable to copy link"));
+        };
+    }
+    
+    function closeShareModal() {
+        const modal = document.getElementById('shareModal');
+        if (modal) modal.style.display = 'none';
+    }
+    
+    // Message Modal handlers
+    function showMessageModal(msg) {
+        const modal = document.getElementById('messageModal');
+        const msgSpan = document.getElementById('modalMessage');
+        if (msgSpan) msgSpan.innerText = msg;
+        if (modal) modal.style.display = 'flex';
+        setTimeout(() => {
+            closeMessageModal();
+        }, 2000);
+    }
+    
+    function closeMessageModal() {
+        const modal = document.getElementById('messageModal');
+        if (modal) modal.style.display = 'none';
+    }
+    
+    window.onclick = function(event) {
+        const shareModal = document.getElementById('shareModal');
+        const msgModal = document.getElementById('messageModal');
+        if (event.target === shareModal) closeShareModal();
+        if (event.target === msgModal) closeMessageModal();
+    }
+    
+    // No preloaded results to keep single result mode clean
+    console.log("Case Converter Ready — Single result mode active");
+</script>
+</body>
+  </html>
