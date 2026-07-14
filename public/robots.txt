@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://textcase.in/sitemap.xml
+Sitemap: https://www.textcase.in/sitemap.xml
