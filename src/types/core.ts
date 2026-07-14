@@ -71,15 +71,24 @@ export interface RepairRule {
 
 export interface LandingPage {
   id: string;
+  slug: string;
   title: string;
   h1: string;
   subtitle: string;
   metaTitle: string;
   metaDesc: string;
+  metaDescription: string;
   sampleText: string;
   keywords: string[];
   canonical: string;
-  schema?: string;
+  schema: string;
+  heroTitle: string;
+  heroDescription: string;
+  faq: FAQItem[];
+  problemDescription: string;
+  solutionDescription: string;
+  examples: { input: string; output: string }[];
+  relatedPages: string[];
 }
 
 export interface HistoryItem {

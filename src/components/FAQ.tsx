@@ -2,8 +2,13 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { HelpCircle, ChevronDown } from "lucide-react";
 import { FAQ_DATA } from "../content/faq";
+import { FAQItem } from "../types";
 
-export default function FAQ() {
+interface FAQProps {
+  items?: FAQItem[];
+}
+
+export default function FAQ({ items = FAQ_DATA }: FAQProps) {
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
 
   return (
@@ -21,7 +26,7 @@ export default function FAQ() {
       </div>
 
       <div className="space-y-3" id="faq-list">
-        {FAQ_DATA.map((faq, index) => {
+        {items.map((faq, index) => {
           const isExpanded = expandedFaq === index;
           return (
             <div

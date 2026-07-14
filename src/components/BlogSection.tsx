@@ -2,13 +2,152 @@ import { useParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import { ArrowRight, ArrowLeft } from "lucide-react";
 import { BLOG_ARTICLES } from "../content/blog";
+import React from "react";
+
+function parseInline(text: string, navigate: (path: string) => void): React.ReactNode {
+  const regex = /(\[.*?\]\(.*?\))|(\*\*.*?\*\*)|(`.*?`)/g;
+  const parts = text.split(regex);
+  
+  return parts.map((part, index) => {
+    if (!part) return null;
+    
+    // Check if it matches a Link: [Text](URL)
+    if (part.startsWith("[") && part.includes("](")) {
+      const closeBracket = part.indexOf("](");
+      const label = part.substring(1, closeBracket);
+      const url = part.substring(closeBracket + 2, part.length - 1);
+      
+      const isInternal = url.startsWith("/") || !url.startsWith("http");
+      if (isInternal) {
+        return (
+          <button
+            key={index}
+            onClick={(e) => {
+              e.preventDefault();
+              navigate(url);
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+            className="text-blue-600 dark:text-blue-400 font-semibold hover:underline bg-transparent border-none p-0 inline cursor-pointer text-left font-sans text-sm sm:text-base"
+          >
+            {label}
+          </button>
+        );
+      } else {
+        return (
+          <a
+            key={index}
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 dark:text-blue-400 font-semibold hover:underline"
+          >
+            {label}
+          </a>
+        );
+      }
+    }
+    
+    // Check if it matches Bold: **Text**
+    if (part.startsWith("**") && part.endsWith("**")) {
+      return (
+        <strong key={index} className="font-extrabold text-gray-900 dark:text-gray-150">
+          {part.substring(2, part.length - 2)}
+        </strong>
+      );
+    }
+    
+    // Check if it matches Code: `Text`
+    if (part.startsWith("`") && part.endsWith("`")) {
+      return (
+        <code key={index} className="px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-800 text-pink-600 dark:text-pink-400 font-mono text-xs">
+          {part.substring(1, part.length - 1)}
+        </code>
+      );
+    }
+    
+    // Standard text
+    return part;
+  });
+}
+
+function renderMarkdownContent(content: string, navigate: (path: string) => void) {
+  const blocks = content.split("\n\n");
+
+  return blocks.map((block, bIdx) => {
+    const trimmed = block.trim();
+    if (!trimmed) return null;
+
+    // 1. Horizontal Rule
+    if (trimmed === "---") {
+      return <hr key={bIdx} className="my-8 border-t border-gray-200 dark:border-gray-800" />;
+    }
+
+    // 2. Headings
+    if (trimmed.startsWith("### ")) {
+      return (
+        <h3 key={bIdx} className="font-display text-lg font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4 tracking-tight">
+          {parseInline(trimmed.substring(4), navigate)}
+        </h3>
+      );
+    }
+    if (trimmed.startsWith("## ")) {
+      return (
+        <h2 key={bIdx} className="font-display text-xl font-bold text-gray-900 dark:text-gray-100 mt-10 mb-4 tracking-tight">
+          {parseInline(trimmed.substring(3), navigate)}
+        </h2>
+      );
+    }
+    if (trimmed.startsWith("# ")) {
+      return (
+        <h1 key={bIdx} className="font-display text-2xl font-extrabold text-gray-900 dark:text-gray-100 mt-12 mb-6 tracking-tight">
+          {parseInline(trimmed.substring(2), navigate)}
+        </h1>
+      );
+    }
+
+    // 3. Lists
+    if (trimmed.startsWith("* ") || trimmed.startsWith("- ")) {
+      const lines = block.split("\n");
+      return (
+        <ul key={bIdx} className="list-disc pl-5 space-y-2 my-4 text-gray-600 dark:text-gray-300">
+          {lines.map((line, lIdx) => {
+            const lineContent = line.replace(/^[\s*-]+/, "").trim();
+            return <li key={lIdx}>{parseInline(lineContent, navigate)}</li>;
+          })}
+        </ul>
+      );
+    }
+
+    // 4. Blockquotes
+    if (trimmed.startsWith("> ")) {
+      const lines = block.split("\n").map(l => l.replace(/^>\s?/, ""));
+      return (
+        <blockquote key={bIdx} className="border-l-4 border-blue-500 pl-4 italic my-4 text-gray-600 dark:text-gray-300">
+          {lines.map((line, lIdx) => (
+            <p key={lIdx} className="mb-2 last:mb-0">
+              {parseInline(line, navigate)}
+            </p>
+          ))}
+        </blockquote>
+      );
+    }
+
+    // 5. Default Paragraph
+    return (
+      <p key={bIdx} className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
+        {parseInline(trimmed, navigate)}
+      </p>
+    );
+  });
+}
 
 export default function BlogSection() {
-  const { slug } = useParams();
+  const { slug, id } = useParams();
   const navigate = useNavigate();
 
-  const selectedArticle = slug
-    ? (BLOG_ARTICLES.find((a) => a.slug === slug || a.id === slug) || null)
+  const articleKey = slug || id;
+  const selectedArticle = articleKey
+    ? (BLOG_ARTICLES.find((a) => a.slug === articleKey || a.id === articleKey) || null)
     : null;
 
   const handleReadArticle = (article: typeof BLOG_ARTICLES[0]) => {
@@ -112,8 +251,8 @@ export default function BlogSection() {
               {selectedArticle.title}
             </h1>
 
-            <div className="mt-8 border-t border-gray-100 dark:border-gray-850 pt-8 text-sm sm:text-base text-gray-600 dark:text-gray-300 space-y-6 leading-relaxed whitespace-pre-wrap font-sans">
-              {selectedArticle.content}
+            <div className="mt-8 border-t border-gray-100 dark:border-gray-850 pt-8 text-sm sm:text-base text-gray-600 dark:text-gray-300 space-y-4 leading-relaxed font-sans">
+              {renderMarkdownContent(selectedArticle.content, navigate)}
             </div>
           </motion.div>
         )}

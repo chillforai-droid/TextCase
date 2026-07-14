@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -20,23 +20,23 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Toast from "./components/Toast";
 import SEO from "./components/SEO";
-import Hero from "./components/Hero";
-import Editor from "./components/Editor";
-import Compare from "./components/Compare";
-import RepairSummaryCard from "./components/RepairSummary";
-import Scanner from "./components/Scanner";
-import FAQ from "./components/FAQ";
-import History from "./components/History";
-import ContactForm from "./components/ContactForm";
-import BlogSection from "./components/BlogSection";
 import AuditReportModal from "./components/AuditReportModal";
-import TexlyPromo from "./components/TexlyPromo";
-
-// Import SaaS pages and services
-import FeedbackPage from "./components/FeedbackPage";
-import RoadmapPage from "./components/RoadmapPage";
-import ChangelogPage from "./components/ChangelogPage";
 import FeedbackModal from "./components/FeedbackModal";
+
+// Lazy-load sub-pages for lightning-fast bundles
+import LandingPage from "./pages/LandingPage";
+const AboutPage = React.lazy(() => import("./pages/AboutPage"));
+const ContactPage = React.lazy(() => import("./pages/ContactPage"));
+const PrivacyPage = React.lazy(() => import("./pages/PrivacyPage"));
+const TermsPage = React.lazy(() => import("./pages/TermsPage"));
+const SitemapPage = React.lazy(() => import("./pages/SitemapPage"));
+const RobotsPage = React.lazy(() => import("./pages/RobotsPage"));
+const NotFoundPage = React.lazy(() => import("./pages/NotFoundPage"));
+const FeedbackPage = React.lazy(() => import("./components/FeedbackPage"));
+const RoadmapPage = React.lazy(() => import("./components/RoadmapPage"));
+const ChangelogPage = React.lazy(() => import("./components/ChangelogPage"));
+const BlogSection = React.lazy(() => import("./components/BlogSection"));
+
 import { repairSessionService } from "./services/repairSessionService";
 import { feedbackService } from "./services/feedbackService";
 
@@ -47,6 +47,54 @@ export default function App() {
       <AppContent />
     </Router>
   );
+}
+
+interface LandingPageProps {
+  page: typeof LANDING_PAGES[string];
+  inputText: string;
+  setInputText: (text: string) => void;
+  originalText: string;
+  analysis: AnalysisResult;
+  repairSummary: RepairSummary | null;
+  isRepaired: boolean;
+  activeTab: "edit" | "compare";
+  setActiveTab: (tab: "edit" | "compare") => void;
+  compareMode: "side" | "unified";
+  setCompareMode: (mode: "side" | "unified") => void;
+  isDragging: boolean;
+  reportOpen: boolean;
+  setReportOpen: (open: boolean) => void;
+  expandedCard: string | null;
+  setExpandedCard: (card: string | null) => void;
+  history: HistoryItem[];
+  handleClear: () => void;
+  handleCopy: () => void;
+  handleAnalyze: () => void;
+  handleFix: () => void;
+  handleLoadSample: () => void;
+  handleExport: (format: "txt" | "md" | "html" | "docx") => void;
+  loadHistoryItem: (item: HistoryItem) => void;
+  deleteHistoryItem: (id: string, e: React.MouseEvent) => void;
+  clearHistory: () => void;
+  handleHelpfulFeedback: (helpful: boolean) => void;
+  triggerToast: (msg: string, type?: "success" | "info" | "warning") => void;
+}
+
+function LandingPageSelector(props: Omit<LandingPageProps, "page">) {
+  const { slug } = useParams();
+  
+  // Custom mapping to preserve support for legacy paths
+  let pageKey = slug || "default";
+  if (pageKey === "fix-copy-paste") {
+    pageKey = "fix-copy-paste-text";
+  }
+
+  const page = LANDING_PAGES[pageKey];
+  if (!page) {
+    return <NotFoundPage />;
+  }
+
+  return <LandingPage page={page} {...props} />;
 }
 
 function AppContent() {
@@ -507,447 +555,104 @@ function AppContent() {
 
       <main className="flex-grow pt-24" id="app-main-content">
         <AnimatePresence mode="wait">
-          {activePage === "home" && (
-            <motion.div
-              key="home-page"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8"
-            >
-              {/* Dynamic Hero */}
-              <Hero page={LANDING_PAGES[currentLandingPage] || LANDING_PAGES.default} />
+          <Suspense
+            fallback={
+              <div className="flex min-h-[50vh] items-center justify-center">
+                <div className="h-6 w-6 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
+              </div>
+            }
+          >
+            <Routes location={location}>
+              {/* Static sub-pages */}
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/contact" element={<ContactPage triggerToast={triggerToast} />} />
+              <Route path="/privacy" element={<PrivacyPage />} />
+              <Route path="/terms" element={<TermsPage />} />
+              <Route path="/sitemap" element={<SitemapPage triggerToast={triggerToast} />} />
+              <Route path="/robots" element={<RobotsPage triggerToast={triggerToast} />} />
+              <Route path="/blog" element={<BlogSection />} />
+              <Route path="/blog/:id" element={<BlogSection />} />
+              <Route path="/feedback" element={<FeedbackPage triggerToast={triggerToast} />} />
+              <Route path="/roadmap" element={<RoadmapPage />} />
+              <Route path="/changelog" element={<ChangelogPage />} />
 
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mt-6">
-                
-                {/* Left Column: Interactive Workspace */}
-                <div className="lg:col-span-7 flex flex-col">
-                  {/* Mode Tabs */}
-                  <div className="flex items-center justify-between mb-4 bg-gray-100 dark:bg-gray-900 p-1.5 rounded-2xl border border-gray-200/50 dark:border-gray-800/50">
-                    <div className="flex gap-1">
-                      <button
-                        onClick={() => setActiveTab("edit")}
-                        className={`px-4 py-2 rounded-xl text-xs font-bold transition ${
-                          activeTab === "edit"
-                            ? "bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-sm"
-                            : "text-gray-400 dark:text-gray-550 hover:text-gray-750 cursor-pointer"
-                        }`}
-                        id="tab-edit"
-                      >
-                        Interactive Workspace
-                      </button>
-                      <button
-                        onClick={() => {
-                          if (!originalText) {
-                            triggerToast("No repairs executed yet. Paste text and click 'Fix Text' first.", "info");
-                            return;
-                          }
-                          setActiveTab("compare");
-                        }}
-                        className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
-                          activeTab === "compare"
-                            ? "bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-sm"
-                            : "text-gray-400 dark:text-gray-550 hover:text-gray-750 cursor-pointer"
-                        }`}
-                        id="tab-compare"
-                      >
-                        Diff Auditor
-                        {originalText && (
-                          <span className="h-2 w-2 rounded-full bg-blue-500 animate-pulse" />
-                        )}
-                      </button>
-                    </div>
-
-                    {activeTab === "compare" && (
-                      <div className="flex items-center gap-1 bg-gray-50/50 dark:bg-gray-950/20 p-0.5 rounded-lg border border-gray-200/30">
-                        <button
-                          onClick={() => setCompareMode("side")}
-                          className={`px-2 py-1 rounded text-[10px] font-bold ${
-                            compareMode === "side"
-                              ? "bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-xs"
-                              : "text-gray-400 dark:text-gray-550 cursor-pointer"
-                          }`}
-                        >
-                          Side-by-Side
-                        </button>
-                        <button
-                          onClick={() => setCompareMode("unified")}
-                          className={`px-2 py-1 rounded text-[10px] font-bold ${
-                            compareMode === "unified"
-                              ? "bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-xs"
-                              : "text-gray-400 dark:text-gray-550 cursor-pointer"
-                          }`}
-                        >
-                          Unified
-                        </button>
-                      </div>
-                    )}
-                  </div>
-
-                  {activeTab === "edit" ? (
-                    <Editor
-                      inputText={inputText}
-                      setInputText={setInputText}
-                      handleClear={handleClear}
-                      handleCopy={handleCopy}
-                      handleAnalyze={handleAnalyze}
-                      handleFix={handleFix}
-                      handleLoadSample={handleLoadSample}
-                      handleExport={handleExport}
-                      isDragging={isDragging}
-                    />
-                  ) : (
-                    <Compare
-                      originalText={originalText}
-                      inputText={inputText}
-                      setActiveTab={setActiveTab}
-                    />
-                  )}
-                </div>
-
-                {/* Right Column: Scan Anomalies & Summary Stats */}
-                <div className="lg:col-span-5 flex flex-col gap-6">
-                  
-                  {/* Success box */}
-                  <AnimatePresence>
-                    {isRepaired && repairSummary && (
-                      <RepairSummaryCard
-                        repairSummary={repairSummary}
-                        handleCopy={handleCopy}
-                        setReportOpen={setReportOpen}
-                        onHelpfulFeedback={handleHelpfulFeedback}
-                      />
-                    )}
-                  </AnimatePresence>
-
-                  {/* Real-Time Scanner */}
-                  <Scanner
+              {/* Dynamic specialty landing page routes */}
+              <Route
+                path="/:slug"
+                element={
+                  <LandingPageSelector
                     inputText={inputText}
+                    setInputText={setInputText}
+                    originalText={originalText}
                     analysis={analysis}
+                    repairSummary={repairSummary}
+                    isRepaired={isRepaired}
+                    activeTab={activeTab}
+                    setActiveTab={setActiveTab}
+                    compareMode={compareMode}
+                    setCompareMode={setCompareMode}
+                    isDragging={isDragging}
+                    reportOpen={reportOpen}
+                    setReportOpen={setReportOpen}
                     expandedCard={expandedCard}
                     setExpandedCard={setExpandedCard}
+                    history={history}
+                    handleClear={handleClear}
+                    handleCopy={handleCopy}
+                    handleAnalyze={handleAnalyze}
                     handleFix={handleFix}
                     handleLoadSample={handleLoadSample}
-                    triggerToast={triggerToast}
-                  />
-
-                  {/* Texly Premium Promotion */}
-                  <TexlyPromo />
-
-                  {/* Local History logs */}
-                  <History
-                    history={history}
+                    handleExport={handleExport}
                     loadHistoryItem={loadHistoryItem}
                     deleteHistoryItem={deleteHistoryItem}
                     clearHistory={clearHistory}
+                    handleHelpfulFeedback={handleHelpfulFeedback}
+                    triggerToast={triggerToast}
                   />
+                }
+              />
 
-                </div>
-              </div>
+              {/* Default Home route */}
+              <Route
+                path="/"
+                element={
+                  <LandingPage
+                    page={LANDING_PAGES.default}
+                    inputText={inputText}
+                    setInputText={setInputText}
+                    originalText={originalText}
+                    analysis={analysis}
+                    repairSummary={repairSummary}
+                    isRepaired={isRepaired}
+                    activeTab={activeTab}
+                    setActiveTab={setActiveTab}
+                    compareMode={compareMode}
+                    setCompareMode={setCompareMode}
+                    isDragging={isDragging}
+                    reportOpen={reportOpen}
+                    setReportOpen={setReportOpen}
+                    expandedCard={expandedCard}
+                    setExpandedCard={setExpandedCard}
+                    history={history}
+                    handleClear={handleClear}
+                    handleCopy={handleCopy}
+                    handleAnalyze={handleAnalyze}
+                    handleFix={handleFix}
+                    handleLoadSample={handleLoadSample}
+                    handleExport={handleExport}
+                    loadHistoryItem={loadHistoryItem}
+                    deleteHistoryItem={deleteHistoryItem}
+                    clearHistory={clearHistory}
+                    handleHelpfulFeedback={handleHelpfulFeedback}
+                    triggerToast={triggerToast}
+                  />
+                }
+              />
 
-              {/* FAQ Section */}
-              <FAQ />
-            </motion.div>
-          )}
-
-          {activePage === "blog" && (
-            <BlogSection />
-          )}
-
-          {activePage === "blog-post" && (
-            <BlogSection />
-          )}
-
-          {activePage === "about" && (
-            <motion.div
-              key="about-page"
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8"
-            >
-              <div className="rounded-2xl border border-gray-100 dark:border-gray-850 bg-white dark:bg-gray-900 p-6 sm:p-10 shadow-sm" id="about-content">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 mb-6">
-                  <BookOpen className="h-6 w-6" />
-                </div>
-                <h1 className="font-display text-3xl font-extrabold text-gray-950 dark:text-gray-5 block sm:text-4xl tracking-tight">
-                  About TextCase
-                </h1>
-                <p className="mt-4 text-sm text-gray-400 dark:text-gray-500 leading-relaxed">
-                  The clean text repair utility built for developers, writers, editors, and anyone tired of terrible copy-paste layouts.
-                </p>
-
-                <div className="mt-8 border-t border-gray-100 dark:border-gray-850 pt-8 space-y-6 text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
-                  <p>
-                    TextCase was born out of frustration. When copying passages from PDFs, research papers, ChatGPT windows, or mobile websites, the text invariably breaks. Hard returns appear in weird places, hyphens split single words, and weird invisible characters disrupt compilers and messaging grids.
-                  </p>
-                  <p>
-                    Most online solutions are bloated, require logins, display distracting ads, or worse—send your confidential text to external servers for parsing.
-                  </p>
-                  <h3 className="font-display font-extrabold text-gray-900 dark:text-gray-50 text-lg pt-4">Our Technology Principles</h3>
-                  <ul className="space-y-3 pt-2">
-                    <li className="flex gap-3">
-                      <div className="h-5 w-5 rounded-full bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0 mt-0.5">✓</div>
-                      <span><strong>Offline Parsing Engine:</strong> Your data does not travel over wires. Every character replacement takes place locally in your browser memory.</span>
-                    </li>
-                    <li className="flex gap-3">
-                      <div className="h-5 w-5 rounded-full bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0 mt-0.5">✓</div>
-                      <span><strong>High-Performance Regular Expressions:</strong> Fully optimized algorithms handle massive novels, research documents, and bulk strings in milliseconds.</span>
-                    </li>
-                    <li className="flex gap-3">
-                      <div className="h-5 w-5 rounded-full bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0 mt-0.5">✓</div>
-                      <span><strong>No Tracker Bloat:</strong> Pure clean product architecture. No account logs, cookies, or marketing trackers are active.</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </motion.div>
-          )}
-
-          {activePage === "contact" && (
-            <motion.div
-              key="contact-page"
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              className="mx-auto max-w-xl px-4 py-12 sm:px-6 lg:px-8"
-            >
-              <ContactForm triggerToast={triggerToast} />
-            </motion.div>
-          )}
-
-          {activePage === "privacy" && (
-            <motion.div
-              key="privacy-page"
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8"
-            >
-              <div className="rounded-2xl border border-gray-100 dark:border-gray-850 bg-white dark:bg-gray-900 p-6 sm:p-10 shadow-sm" id="privacy-content">
-                <h1 className="font-display text-3xl font-extrabold text-gray-900 dark:text-gray-50 tracking-tight mb-6">
-                  Privacy Policy
-                </h1>
-                <div className="space-y-4 text-xs sm:text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
-                  <p className="font-bold text-gray-800 dark:text-gray-250">Last updated: July 10, 2026</p>
-                  <p>
-                    At TextCase, we care deeply about privacy. In fact, we built this tool with a **Privacy First** paradigm.
-                  </p>
-                  <p className="bg-blue-50 dark:bg-blue-950/30 text-blue-800 dark:text-blue-400 p-4 rounded-xl border border-blue-100 dark:border-blue-900/30 font-semibold">
-                    We do not collect, store, transmit, or monitor any text you paste into our application. All scanning, character analyses, and repairs run 100% inside your web browser using local client-side JavaScript.
-                  </p>
-                  <h3 className="font-display font-extrabold text-gray-900 dark:text-gray-50 text-lg pt-4">1. Data Storage</h3>
-                  <p>
-                    Your pasted content resides in standard volatile browser memory (RAM) while you edit and analyze. Once you refresh your browser, close the browser window, or clear the editor, your text is completely destroyed. It is never persisted on any server database.
-                  </p>
-                  <h3 className="font-display font-extrabold text-gray-900 dark:text-gray-50 text-lg pt-4">2. Cookies & Trackers</h3>
-                  <p>
-                    TextCase does not use tracking cookies, behavioral pixel trackers, or advertising trackers. We maintain a pure utility architecture.
-                  </p>
-                  <h3 className="font-display font-extrabold text-gray-900 dark:text-gray-50 text-lg pt-4">3. Local Security</h3>
-                  <p>
-                    Because processing occurs completely on your machine, your text is as secure as your computer itself. This makes TextCase highly appropriate for editing sensitive legal agreements, personal communications, or health records.
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-          )}
-
-          {activePage === "terms" && (
-            <motion.div
-              key="terms-page"
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8"
-            >
-              <div className="rounded-2xl border border-gray-100 dark:border-gray-850 bg-white dark:bg-gray-900 p-6 sm:p-10 shadow-sm" id="terms-content">
-                <h1 className="font-display text-3xl font-extrabold text-gray-900 dark:text-gray-50 tracking-tight mb-6">
-                  Terms of Service
-                </h1>
-                <div className="space-y-4 text-xs sm:text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
-                  <p className="font-bold text-gray-800 dark:text-gray-250">Effective Date: July 10, 2026</p>
-                  <p>
-                    Welcome to TextCase – Smart Text Fixer. By using our application, you agree to these Terms of Service.
-                  </p>
-                  <h3 className="font-display font-extrabold text-gray-900 dark:text-gray-50 text-lg pt-4">1. Acceptable Use</h3>
-                  <p>
-                    You are free to use TextCase for personal, commercial, academic, or professional projects. There are no character limits, pricing paywalls, or usage caps on the application.
-                  </p>
-                  <h3 className="font-display font-extrabold text-gray-900 dark:text-gray-50 text-lg pt-4">2. Disclaimer of Warranty</h3>
-                  <p>
-                    The service is provided "as is" and "as available". We make no warranties of any kind regarding accuracy, security, completeness, or reliability of repaired text output. Always verify important documents manually.
-                  </p>
-                  <h3 className="font-display font-extrabold text-gray-900 dark:text-gray-50 text-lg pt-4">3. System Integrity</h3>
-                  <p>
-                    You agree not to attempt to disrupt the performance of our application or overload our hosted bundle assets.
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-          )}
-
-          {activePage === "sitemap" && (
-            <motion.div
-              key="sitemap-page"
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8"
-            >
-              <div className="rounded-2xl border border-gray-100 dark:border-gray-850 bg-white dark:bg-gray-900 p-6 sm:p-10 shadow-sm" id="sitemap-content">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 mb-6">
-                  <Map className="h-6 w-6" />
-                </div>
-                <h1 className="font-display text-3xl font-extrabold text-gray-900 dark:text-gray-50 tracking-tight">
-                  Sitemap XML
-                </h1>
-                <p className="mt-2 text-xs text-gray-400">
-                  Search engines can crawl our complete clean directory. Here is the visual schema representing `sitemap.xml` for index engines.
-                </p>
-
-                <div className="mt-8 border-t border-gray-100 dark:border-gray-850 pt-8">
-                  <h3 className="text-sm font-bold text-gray-900 dark:text-gray-100 mb-3 uppercase tracking-wider text-gray-400 dark:text-gray-500">Interactive Map</h3>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                    <button onClick={() => handlePageChange("home")} className="p-3 text-xs font-semibold text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-950 rounded-xl hover:bg-blue-50 dark:hover:bg-blue-950 hover:text-blue-600 dark:hover:text-blue-400 border border-gray-100 dark:border-gray-850 text-left cursor-pointer">
-                      Home (Smart Tool)
-                    </button>
-                    <button onClick={() => handlePageChange("blog")} className="p-3 text-xs font-semibold text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-950 rounded-xl hover:bg-blue-50 dark:hover:bg-blue-950 hover:text-blue-600 dark:hover:text-blue-400 border border-gray-100 dark:border-gray-850 text-left cursor-pointer">
-                      Blog (Guides Hub)
-                    </button>
-                    <button onClick={() => handlePageChange("about")} className="p-3 text-xs font-semibold text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-950 rounded-xl hover:bg-blue-50 dark:hover:bg-blue-950 hover:text-blue-600 dark:hover:text-blue-400 border border-gray-100 dark:border-gray-850 text-left cursor-pointer">
-                      About Page
-                    </button>
-                    <button onClick={() => handlePageChange("contact")} className="p-3 text-xs font-semibold text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-950 rounded-xl hover:bg-blue-50 dark:hover:bg-blue-950 hover:text-blue-600 dark:hover:text-blue-400 border border-gray-100 dark:border-gray-850 text-left cursor-pointer">
-                      Contact Form
-                    </button>
-                    <button onClick={() => handlePageChange("privacy")} className="p-3 text-xs font-semibold text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-950 rounded-xl hover:bg-blue-50 dark:hover:bg-blue-950 hover:text-blue-600 dark:hover:text-blue-400 border border-gray-100 dark:border-gray-850 text-left cursor-pointer">
-                      Privacy Policy
-                    </button>
-                    <button onClick={() => handlePageChange("terms")} className="p-3 text-xs font-semibold text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-950 rounded-xl hover:bg-blue-50 dark:hover:bg-blue-950 hover:text-blue-600 dark:hover:text-blue-400 border border-gray-100 dark:border-gray-850 text-left cursor-pointer">
-                      Terms of Service
-                    </button>
-                  </div>
-
-                  <h3 className="text-sm font-bold text-gray-900 dark:text-gray-100 mt-8 mb-3 uppercase tracking-wider text-gray-400 dark:text-gray-500">Raw Sitemap Source</h3>
-                  <div className="relative rounded-xl bg-gray-950 p-4 font-mono text-[11px] text-gray-300 border border-gray-800 overflow-x-auto">
-                    <button
-                      onClick={() => {
-                        navigator.clipboard.writeText(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <url><loc>https://textcase.in/</loc><priority>1.0</priority></url>\n  <url><loc>https://textcase.in/blog</loc><priority>0.8</priority></url>\n  <url><loc>https://textcase.in/about</loc><priority>0.5</priority></url>\n  <url><loc>https://textcase.in/contact</loc><priority>0.5</priority></url>\n</urlset>`);
-                        triggerToast("Raw Sitemap XML copied!", "success");
-                      }}
-                      className="absolute top-3 right-3 bg-gray-800 hover:bg-gray-700 text-white rounded px-2 py-1 text-[10px] cursor-pointer"
-                    >
-                      Copy XML
-                    </button>
-                    <pre>{`<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://textcase.in/</loc>
-    <lastmod>2026-07-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://textcase.in/blog</loc>
-    <lastmod>2026-07-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://textcase.in/about</loc>
-    <lastmod>2026-07-13</lastmod>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://textcase.in/contact</loc>
-    <lastmod>2026-07-13</lastmod>
-    <priority>0.5</priority>
-  </url>
-</urlset>`}</pre>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          )}
-
-          {activePage === "robots" && (
-            <motion.div
-              key="robots-page"
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8"
-            >
-              <div className="rounded-2xl border border-gray-100 dark:border-gray-850 bg-white dark:bg-gray-900 p-6 sm:p-10 shadow-sm" id="robots-content">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 mb-6">
-                  <Terminal className="h-6 w-6" />
-                </div>
-                <h1 className="font-display text-3xl font-extrabold text-gray-900 dark:text-gray-50 tracking-tight">
-                  Robots.txt Source
-                </h1>
-                <p className="mt-2 text-xs text-gray-400">
-                  Standard directives for search engine crawler agents.
-                </p>
-
-                <div className="mt-8 border-t border-gray-100 dark:border-gray-850 pt-8">
-                  <div className="relative rounded-xl bg-gray-950 p-5 font-mono text-sm text-gray-300 border border-gray-800">
-                    <button
-                      onClick={() => {
-                        navigator.clipboard.writeText("User-agent: *\nAllow: /\nDisallow: /api/\nSitemap: https://textcase.in/sitemap.xml");
-                        triggerToast("Robots.txt copied!", "success");
-                      }}
-                      className="absolute top-3 right-3 bg-gray-800 hover:bg-gray-700 text-white rounded px-2 py-1 text-xs cursor-pointer"
-                    >
-                      Copy Raw
-                    </button>
-                    <pre className="space-y-1">
-                      <div><span className="text-blue-400"># Directives for index robots</span></div>
-                      <div>User-agent: *</div>
-                      <div>Allow: /</div>
-                      <div>Disallow: /api/</div>
-                      <br />
-                      <div><span className="text-blue-400"># Link sitemap location</span></div>
-                      <div>Sitemap: https://textcase.in/sitemap.xml</div>
-                    </pre>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          )}
-
-          {activePage === "feedback" && (
-            <motion.div
-              key="feedback-page"
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-            >
-              <FeedbackPage triggerToast={triggerToast} />
-            </motion.div>
-          )}
-
-          {activePage === "roadmap" && (
-            <motion.div
-              key="roadmap-page"
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-            >
-              <RoadmapPage />
-            </motion.div>
-          )}
-
-          {activePage === "changelog" && (
-            <motion.div
-              key="changelog-page"
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-            >
-              <ChangelogPage />
-            </motion.div>
-          )}
+              {/* Catch-all 404 custom page */}
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          </Suspense>
         </AnimatePresence>
       </main>
 
@@ -981,3 +686,4 @@ function AppContent() {
     </div>
   );
 }
+
