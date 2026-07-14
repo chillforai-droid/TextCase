@@ -1,0 +1,21 @@
+{
+  "name": "TextCase Text Formatting & Repair Tool",
+  "short_name": "TextCase",
+  "description": "Clean messy copy-pastes, remove formatting symbols, and fix OCR glitches in one click.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

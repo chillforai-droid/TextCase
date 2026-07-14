@@ -1,0 +1,6 @@
+{
+  "name": "TextCase",
+  "description": "Repair broken copied text from ChatGPT, PDF, OCR, Markdown and Unicode instantly. Fast, free and privacy friendly.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
