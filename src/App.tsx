@@ -174,7 +174,10 @@ function AppContent() {
       setActivePage("changelog");
     } else {
       // Check if the parameter matches a specialized landing page
-      const pageKey = path.substring(1);
+      let pageKey = path.substring(1);
+      if (pageKey === "fix-copy-paste") {
+        pageKey = "fix-copy-paste-text";
+      }
       if (LANDING_PAGES[pageKey]) {
         setActivePage("home");
         setCurrentLandingPage(pageKey);
