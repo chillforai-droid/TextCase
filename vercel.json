@@ -1,4 +1,11 @@
 {
+  "redirects": [
+    {
+      "source": "/fix-copy-paste",
+      "destination": "/fix-copy-paste-text",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/(.*)",

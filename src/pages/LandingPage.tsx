@@ -14,7 +14,6 @@ import {
   AlertCircle
 } from "lucide-react";
 import { LandingPage as LandingPageType, FAQItem, AnalysisResult, RepairSummary, HistoryItem } from "../types";
-import SEO from "../components/SEO";
 import Hero from "../components/Hero";
 import Editor from "../components/Editor";
 import Compare from "../components/Compare";
@@ -96,8 +95,6 @@ export default function LandingPage({
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8" id={`landing-page-${page.id}`}>
-      <SEO page={page} />
-
       {/* Hero Section */}
       <Hero page={page} />
 

@@ -22,6 +22,7 @@ import Toast from "./components/Toast";
 import SEO from "./components/SEO";
 import AuditReportModal from "./components/AuditReportModal";
 import FeedbackModal from "./components/FeedbackModal";
+import VoiceIDPromo from "./components/VoiceIDPromo";
 
 // Lazy-load sub-pages for lightning-fast bundles
 import LandingPage from "./pages/LandingPage";
@@ -552,7 +553,7 @@ function AppContent() {
       className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-950 transition duration-150 select-none selection:bg-blue-500/20"
       id="app-root-container"
     >
-      <SEO page={LANDING_PAGES[currentLandingPage] || LANDING_PAGES.default} />
+      <SEO />
       
       <Navbar theme={theme} setTheme={setTheme} activePage={activePage} setActivePage={handlePageChange} />
 
@@ -658,6 +659,8 @@ function AppContent() {
           </Suspense>
         </AnimatePresence>
       </main>
+
+      <VoiceIDPromo />
 
       <Footer setActivePage={handlePageChange} setCurrentLandingPage={handleLandingPageChange} />
 

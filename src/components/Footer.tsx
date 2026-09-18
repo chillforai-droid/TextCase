@@ -96,7 +96,7 @@ export default function Footer({ setActivePage, setCurrentLandingPage }: FooterP
                 </li>
                 <li>
                   <button
-                    onClick={() => handleLandingPageLink("fix-copy-paste")}
+                    onClick={() => handleLandingPageLink("fix-copy-paste-text")}
                     className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-950 dark:hover:text-white focus:outline-none text-left cursor-pointer font-medium"
                   >
                     Copy-Paste Cleaner
