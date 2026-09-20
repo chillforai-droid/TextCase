@@ -201,6 +201,22 @@ export default function LandingPage({
             )}
           </AnimatePresence>
 
+          {/* Contextual VoiceID promotion: shown only after a completed repair */}
+          {isRepaired && repairSummary && (
+            <div className="rounded-2xl border border-blue-100 bg-blue-50/60 p-4 dark:border-blue-900/50 dark:bg-blue-950/20">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">A related creator project</p>
+                  <h3 className="mt-1 text-sm font-bold text-gray-900 dark:text-gray-100">Take your conversations beyond text</h3>
+                  <p className="mt-1 text-xs leading-relaxed text-gray-600 dark:text-gray-300">Explore VoiceID for voice-based communication and private conversations.</p>
+                </div>
+                <a href="https://www.voiceid.online/?utm_source=textcase&utm_medium=referral&utm_campaign=voiceid_promotion&utm_content=repair_result" target="_blank" rel="noopener noreferrer" className="inline-flex shrink-0 items-center justify-center rounded-xl bg-blue-600 px-3.5 py-2.5 text-xs font-bold text-white transition hover:bg-blue-700">
+                  Explore VoiceID <ExternalLink className="ml-1.5 h-3.5 w-3.5" />
+                </a>
+              </div>
+            </div>
+          )}
+
           {/* Real-Time Scanner */}
           <Scanner
             inputText={inputText}

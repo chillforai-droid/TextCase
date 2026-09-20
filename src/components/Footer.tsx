@@ -216,6 +216,17 @@ export default function Footer({ setActivePage, setCurrentLandingPage }: FooterP
                     Robots.txt
                   </button>
                 </li>
+                <li>
+                  <a
+                    href="https://www.voiceid.online/?utm_source=textcase&utm_medium=referral&utm_campaign=voiceid_promotion&utm_content=footer"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400 hover:text-gray-950 dark:hover:text-white font-medium"
+                    id="footer-link-voiceid"
+                  >
+                    VoiceID <ArrowUpRight className="h-3.5 w-3.5" />
+                  </a>
+                </li>
               </ul>
             </div>
 
