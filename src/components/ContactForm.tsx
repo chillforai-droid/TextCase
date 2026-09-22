@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Mail, CheckCircle } from "lucide-react";
+import { supabase } from "../lib/supabase";
 
 interface ContactFormProps {
   triggerToast: (msg: string, type?: "success" | "info" | "warning") => void;
@@ -10,18 +11,51 @@ export default function ContactForm({ triggerToast }: ContactFormProps) {
   const [contactEmail, setContactEmail] = useState("");
   const [contactMsg, setContactMsg] = useState("");
   const [contactSuccess, setContactSuccess] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleContactSubmit = (e: React.FormEvent) => {
+  const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!contactName || !contactEmail || !contactMsg) {
+
+    const name = contactName.trim();
+    const email = contactEmail.trim();
+    const message = contactMsg.trim();
+
+    if (!name || !email || !message) {
       triggerToast("Please fill out all fields.", "warning");
       return;
     }
-    setContactSuccess(true);
-    setContactName("");
-    setContactEmail("");
-    setContactMsg("");
-    triggerToast("Message sent! We'll reply shortly.", "success");
+
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+
+    try {
+      const { error } = await supabase
+        .from("user_inquiries")
+        .insert({
+          name,
+          email,
+          message,
+          status: "new",
+        });
+
+      if (error) {
+        console.error("Contact form submission failed:", error);
+        triggerToast("Unable to send your message. Please try again.", "warning");
+        return;
+      }
+
+      setContactSuccess(true);
+      setContactName("");
+      setContactEmail("");
+      setContactMsg("");
+      triggerToast("Message sent! We'll reply shortly.", "success");
+    } catch (error) {
+      console.error("Unexpected contact form error:", error);
+      triggerToast("Unable to send your message. Please try again.", "warning");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -94,10 +128,11 @@ export default function ContactForm({ triggerToast }: ContactFormProps) {
           </div>
           <button
             type="submit"
-            className="w-full rounded-xl bg-blue-600 hover:bg-blue-700 py-3 text-sm font-bold text-white shadow-md transition duration-150 cursor-pointer"
+            disabled={isSubmitting}
+            className="w-full rounded-xl bg-blue-600 hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60 py-3 text-sm font-bold text-white shadow-md transition duration-150 cursor-pointer"
             id="contact-submit"
           >
-            Send Message
+            {isSubmitting ? "Sending..." : "Send Message"}
           </button>
         </form>
       )}
