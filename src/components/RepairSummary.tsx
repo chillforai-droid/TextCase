@@ -20,6 +20,12 @@ export default function RepairSummary({
 
   if (!repairSummary) return null;
 
+  const totalFixes = Object.entries(repairSummary).reduce((sum, [key, value]) => key !== "changed" && typeof value === "number" ? sum + value : sum, 0);
+  const hasChanges = repairSummary.changed ?? totalFixes > 0;
+  const statusText = hasChanges
+    ? `${totalFixes} formatting adjustment${totalFixes === 1 ? "" : "s"} applied locally.`
+    : "No repairable formatting issues found.";
+
   const handleVote = (helpful: boolean) => {
     setFeedbackSubmitted(true);
     onHelpfulFeedback(helpful);
@@ -43,7 +49,7 @@ export default function RepairSummary({
           </div>
           <div>
             <h3 className="font-display font-extrabold text-gray-900 dark:text-gray-100 text-base leading-snug">Repair Complete</h3>
-            <p className="text-[11px] text-gray-400 dark:text-gray-500">100% formatted anomalies resolved locally.</p>
+            <p className="text-[11px] text-gray-400 dark:text-gray-500">{statusText}</p>
           </div>
         </div>
         

@@ -27,7 +27,8 @@ export function repairText(text: string): RepairResult {
         brokenLinesRepaired: 0,
         spacesNormalized: 0,
         unicodeNormalized: 0,
-        ocrRepaired: 0
+        ocrRepaired: 0,
+        changed: false
       }
     };
   }
@@ -83,7 +84,8 @@ export function repairText(text: string): RepairResult {
       brokenLinesRepaired,
       spacesNormalized,
       unicodeNormalized,
-      ocrRepaired
+      ocrRepaired,
+      changed: repaired !== text
     }
   };
 }

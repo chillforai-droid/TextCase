@@ -520,5 +520,58 @@ We want to re-align this prose.`,
       "applicationCategory": "UtilityApplication",
       "operatingSystem": "All"
     })
-  }
+  },
+
+  "case-converter": {
+    id: "case-converter",
+    slug: "case-converter",
+    title: "Case Converter",
+    h1: "Convert Text Case Online",
+    subtitle: "Change text to UPPERCASE, lowercase, Title Case, Sentence case, or Capitalize Lines directly in your browser.",
+    metaTitle: "Case Converter Online – Uppercase, Lowercase & Title Case | TextCase",
+    metaDesc: "Free online case converter to change text into uppercase, lowercase, title case, sentence case, or capitalized lines. Fast, private, and browser-based.",
+    metaDescription: "Free online case converter to change text into uppercase, lowercase, title case, sentence case, or capitalized lines. Fast, private, and browser-based.",
+    sampleText: `hELLO WORLD!\n\nthis is a sample TEXT for case conversion.\nconvert it instantly without uploading your content.`,
+    keywords: [
+      "case converter",
+      "uppercase converter",
+      "lowercase converter",
+      "title case converter",
+      "sentence case converter",
+      "capitalize lines"
+    ],
+    canonical: `${APP_URL}/case-converter`,
+    heroTitle: "Convert Text Case Online",
+    heroDescription: "Quickly transform copied text into the case style you need without sending your content to a server.",
+    problemDescription: "Text copied from documents, chats, and spreadsheets often arrives in inconsistent capitalization. Fixing every line manually is slow and easy to get wrong.",
+    solutionDescription: "Use TextCase to convert text into uppercase, lowercase, title case, sentence case, or capitalized lines. The conversion runs in your browser and works alongside the text repair workspace.",
+    examples: [
+      { input: "hello world", output: "HELLO WORLD" },
+      { input: "THIS IS A TITLE", output: "This Is A Title" }
+    ],
+    relatedPages: ["repair-text", "fix-copy-paste-text", "remove-extra-spaces"],
+    faq: [
+      {
+        question: "Is the case conversion free?",
+        answer: "Yes. TextCase provides case conversion in the browser without requiring an account."
+      },
+      {
+        question: "Which case styles are supported?",
+        answer: "You can use uppercase, lowercase, title case, sentence case, and capitalize lines."
+      },
+      {
+        question: "Does conversion upload my text?",
+        answer: "The case conversion is performed locally in your browser. Avoid entering confidential information on shared devices."
+      }
+    ],
+    schema: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "TextCase Online Case Converter",
+      "url": `${APP_URL}/case-converter`,
+      "description": "Convert text to uppercase, lowercase, title case, sentence case, or capitalized lines in your browser.",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "All"
+    })
+  },
 };

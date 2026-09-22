@@ -23,6 +23,7 @@ import FAQ from "../components/FAQ";
 import History from "../components/History";
 import TexlyPromo from "../components/TexlyPromo";
 import { LANDING_PAGES } from "../content/pages";
+import { CaseMode } from "../utils/case";
 
 interface LandingPageProps {
   page: LandingPageType;
@@ -46,6 +47,9 @@ interface LandingPageProps {
   handleCopy: () => void;
   handleAnalyze: () => void;
   handleFix: () => void;
+  caseMode: CaseMode;
+  setCaseMode: (mode: CaseMode) => void;
+  handleApplyCase: () => void;
   handleLoadSample: () => void;
   handleExport: (format: "txt" | "md" | "html" | "docx") => void;
   loadHistoryItem: (item: HistoryItem) => void;
@@ -77,6 +81,9 @@ export default function LandingPage({
   handleCopy,
   handleAnalyze,
   handleFix,
+  caseMode,
+  setCaseMode,
+  handleApplyCase,
   handleLoadSample,
   handleExport,
   loadHistoryItem,
@@ -173,6 +180,9 @@ export default function LandingPage({
               handleCopy={handleCopy}
               handleAnalyze={handleAnalyze}
               handleFix={handleFix}
+              caseMode={caseMode}
+              setCaseMode={setCaseMode}
+              handleApplyCase={handleApplyCase}
               handleLoadSample={handleLoadSample}
               handleExport={handleExport}
               isDragging={isDragging}

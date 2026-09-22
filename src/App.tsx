@@ -13,6 +13,7 @@ import { BookOpen, Terminal, Map } from "lucide-react";
 import { ActivePage, AnalysisResult, RepairSummary, HistoryItem } from "./types";
 import { analyzeText } from "./utils/analysis";
 import { repairText } from "./utils/repair";
+import { applyCase, CaseMode } from "./utils/case";
 import { LANDING_PAGES } from "./content/pages";
 
 // Import modular components
@@ -72,6 +73,9 @@ interface LandingPageProps {
   handleCopy: () => void;
   handleAnalyze: () => void;
   handleFix: () => void;
+  caseMode: CaseMode;
+  setCaseMode: (mode: CaseMode) => void;
+  handleApplyCase: () => void;
   handleLoadSample: () => void;
   handleExport: (format: "txt" | "md" | "html" | "docx") => void;
   loadHistoryItem: (item: HistoryItem) => void;
@@ -111,6 +115,7 @@ function AppContent() {
   const [analysis, setAnalysis] = useState<AnalysisResult>(analyzeText(""));
   const [repairSummary, setRepairSummary] = useState<RepairSummary | null>(null);
   const [isRepaired, setIsRepaired] = useState(false);
+  const [caseMode, setCaseMode] = useState<CaseMode>("none");
   const [feedbackModalOpen, setFeedbackModalOpen] = useState(false);
 
   // V2 UI States
@@ -288,6 +293,25 @@ function AppContent() {
     const res = analyzeText(inputText);
     setAnalysis(res);
     triggerToast("Text analysis complete!", "success");
+  };
+
+  const handleApplyCase = () => {
+    if (!inputText.trim()) {
+      triggerToast("Please enter some text before applying a case.", "warning");
+      return;
+    }
+    if (caseMode === "none") {
+      triggerToast("Choose a case conversion first.", "info");
+      return;
+    }
+
+    const converted = applyCase(inputText, caseMode);
+    setOriginalText(inputText);
+    setInputText(converted);
+    setIsRepaired(true);
+    setRepairSummary(null);
+    setActiveTab("compare");
+    triggerToast("Case conversion applied successfully.", "success");
   };
 
   const handleFix = () => {
@@ -489,6 +513,15 @@ function AppContent() {
     triggerToast("Sample text loaded!", "success");
   };
 
+  // Escape plain text before placing it inside generated HTML documents.
+  const escapeHtml = (value: string) =>
+    value
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+
   // Multi-format exporter
   const handleExport = (format: "txt" | "md" | "html" | "docx") => {
     if (!inputText) {
@@ -520,7 +553,7 @@ function AppContent() {
 </head>
 <body>
   <div class="card">
-    ${inputText.split('\n').map(p => p.trim() ? `<p>${p.trim()}</p>` : '<br>').join('\n')}
+    ${inputText.split('\n').map(p => p.trim() ? `<p>${escapeHtml(p.trim())}</p>` : '<br>').join('\n')}
   </div>
 </body>
 </html>`;
@@ -530,19 +563,21 @@ function AppContent() {
       const docContent = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
 <head><title>Repaired Document</title></head>
 <body style="font-family: Arial, sans-serif; padding: 40px; line-height: 1.5;">
-  ${inputText.split('\n').map(p => p.trim() ? `<p>${p.trim()}</p>` : '<p>&nbsp;</p>').join('')}
+  ${inputText.split('\n').map(p => p.trim() ? `<p>${escapeHtml(p.trim())}</p>` : '<p>&nbsp;</p>').join('')}
 </body>
 </html>`;
       file = new Blob([docContent], { type: "application/msword;charset=utf-8" });
       filename += ".doc";
     }
 
-    element.href = URL.createObjectURL(file);
+    const objectUrl = URL.createObjectURL(file);
+    element.href = objectUrl;
     element.download = filename;
     document.body.appendChild(element);
     element.click();
     document.body.removeChild(element);
-    triggerToast(`${format.toUpperCase()} export downloaded!`, "success");
+    window.setTimeout(() => URL.revokeObjectURL(objectUrl), 0);
+    triggerToast(`${format === "docx" ? "DOC" : format.toUpperCase()} export downloaded!`, "success");
   };
 
   return (
@@ -605,6 +640,9 @@ function AppContent() {
                     handleCopy={handleCopy}
                     handleAnalyze={handleAnalyze}
                     handleFix={handleFix}
+                    caseMode={caseMode}
+                    setCaseMode={setCaseMode}
+                    handleApplyCase={handleApplyCase}
                     handleLoadSample={handleLoadSample}
                     handleExport={handleExport}
                     loadHistoryItem={loadHistoryItem}
@@ -642,6 +680,9 @@ function AppContent() {
                     handleCopy={handleCopy}
                     handleAnalyze={handleAnalyze}
                     handleFix={handleFix}
+                    caseMode={caseMode}
+                    setCaseMode={setCaseMode}
+                    handleApplyCase={handleApplyCase}
                     handleLoadSample={handleLoadSample}
                     handleExport={handleExport}
                     loadHistoryItem={loadHistoryItem}

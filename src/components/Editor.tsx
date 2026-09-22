@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { CaseMode } from "../utils/case";
 import {
   FileText,
   Clipboard,
@@ -8,7 +9,8 @@ import {
   Globe,
   FileCode2,
   Search,
-  Sparkles
+  Sparkles,
+  Type
 } from "lucide-react";
 
 interface EditorProps {
@@ -18,6 +20,9 @@ interface EditorProps {
   handleCopy: () => void;
   handleAnalyze: () => void;
   handleFix: () => void;
+  caseMode: CaseMode;
+  setCaseMode: (mode: CaseMode) => void;
+  handleApplyCase: () => void;
   handleLoadSample: () => void;
   handleExport: (format: "txt" | "md" | "html" | "docx") => void;
   isDragging: boolean;
@@ -30,6 +35,9 @@ export default function Editor({
   handleCopy,
   handleAnalyze,
   handleFix,
+  caseMode,
+  setCaseMode,
+  handleApplyCase,
   handleLoadSample,
   handleExport,
   isDragging
@@ -242,12 +250,44 @@ export default function Editor({
                     className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-xs font-bold text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-850 cursor-pointer"
                   >
                     <FileText className="h-3.5 w-3.5 text-blue-500" />
-                    <span>Word Document (.docx)</span>
+                    <span>Word-compatible Document (.doc)</span>
                   </button>
                 </div>
               )}
             </div>
           </div>
+        </div>
+
+        {/* Optional case conversion: intentionally separate from Repair */}
+        <div className="mt-5 rounded-xl border border-indigo-100 dark:border-indigo-900/50 bg-indigo-50/40 dark:bg-indigo-950/20 p-3">
+          <div className="flex items-center gap-2 mb-2">
+            <Type className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+            <span className="text-xs font-black text-gray-800 dark:text-gray-200">Case Converter (Optional)</span>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-2">
+            <select
+              value={caseMode}
+              onChange={(e) => setCaseMode(e.target.value as CaseMode)}
+              className="min-w-0 flex-1 rounded-lg border border-indigo-100 dark:border-indigo-900 bg-white dark:bg-gray-900 px-3 py-2 text-xs font-semibold text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              aria-label="Choose text case"
+            >
+              <option value="none">No case change</option>
+              <option value="upper">UPPERCASE</option>
+              <option value="lower">lowercase</option>
+              <option value="title">Title Case</option>
+              <option value="sentence">Sentence case</option>
+              <option value="capitalize-lines">Capitalize Each Line</option>
+            </select>
+            <button
+              onClick={handleApplyCase}
+              disabled={!inputText || caseMode === "none"}
+              className="inline-flex items-center justify-center rounded-lg bg-indigo-600 px-4 py-2 text-xs font-black text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50 transition"
+              id="btn-apply-case"
+            >
+              Apply Case
+            </button>
+          </div>
+          <p className="mt-2 text-[10px] text-gray-500 dark:text-gray-400">Case conversion is separate. Fix Text Instantly will not change your letter case.</p>
         </div>
 
         {/* Action Panel Buttons */}

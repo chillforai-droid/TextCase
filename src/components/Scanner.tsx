@@ -148,10 +148,10 @@ export default function Scanner({
 
               <div className="sm:col-span-5 flex flex-col justify-between sm:border-l border-white/10 sm:pl-4 pt-2 sm:pt-0">
                 <div>
-                  <div className="text-[10px] font-bold text-blue-200 uppercase tracking-wider">Repair Duration</div>
+                  <div className="text-[10px] font-bold text-blue-200 uppercase tracking-wider">Processing Mode</div>
                   <div className="text-lg font-black tracking-tight mt-0.5 text-yellow-300 flex items-center gap-1">
-                    <Zap className="h-4 w-4 text-yellow-300 animate-pulse" />
-                    &lt; 5 ms
+                    <Zap className="h-4 w-4 text-yellow-300" />
+                    Local &amp; Private
                   </div>
                 </div>
 

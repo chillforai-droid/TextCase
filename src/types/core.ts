@@ -55,6 +55,8 @@ export interface RepairSummary {
   spacesNormalized: number;
   unicodeNormalized: number;
   ocrRepaired: number;
+  /** True when the repair pipeline changed the text content. */
+  changed?: boolean;
 }
 
 export interface RepairRule {
