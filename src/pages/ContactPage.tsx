@@ -16,12 +16,7 @@ export default function ContactPage({ triggerToast }: ContactPageProps) {
       className="mx-auto max-w-xl px-4 py-12 sm:px-6 lg:px-8"
     >
       <ContactForm triggerToast={triggerToast} />
-      <div class="notification">
-      <strong>📢 Need a Faster Response?</strong><br>
-              If you don't receive a response through our contact form, please reach out to us on <a href="https://www.voiceid.online/u/textcase?ref=textcase" target="_blank">VoiceID</a> for faster assistance.
-               </div>
-
-      <section className="mt-8 rounded-2xl border border-gray-200/80 bg-white/80 p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900/60" aria-label="VoiceID information">
+         <section className="mt-8 rounded-2xl border border-gray-200/80 bg-white/80 p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900/60" aria-label="VoiceID information">
         <div className="flex items-start gap-3">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400">
             <Mic2 className="h-5 w-5" />
@@ -37,6 +32,10 @@ export default function ContactPage({ triggerToast }: ContactPageProps) {
             </a>
           </div>
         </div>
+           <div class="notification">
+      <strong>📢 Need a Faster Response?</strong><br>
+              If you don't receive a response through our contact form, please reach out to us on <a href="https://www.voiceid.online/u/textcase?ref=textcase" target="_blank">VoiceID</a> for faster assistance.
+               </div>
       </section>
     </motion.div>
   );
