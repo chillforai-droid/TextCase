@@ -28,7 +28,7 @@ export default function ContactPage({ triggerToast }: ContactPageProps) {
             <p className="mt-1 text-sm leading-relaxed text-gray-600 dark:text-gray-300">
               Looking for a place to connect, message and talk? Discover VoiceID through the official website.
             </p>
-            <a href="https://www.voiceid.online/?utm_source=textcase&utm_medium=referral&utm_campaign=voiceid_promotion&utm_content=contact_page" target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300">
+            <a href="https://www.voiceid.online/u/textcase?ref=textcase" target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300">
               Visit VoiceID <ArrowUpRight className="h-4 w-4" />
             </a>
           </div>
