@@ -32,9 +32,9 @@ export default function ContactPage({ triggerToast }: ContactPageProps) {
             </a>
           </div>
         </div>
-           <div class="notification">
+           <div className="notification">
       <strong>📢 Need a Faster Response?</strong><br>
-              If you don't receive a response through our contact form, please reach out to us on <a href="https://www.voiceid.online/u/textcase?ref=textcase" target="_blank">VoiceID</a> for faster assistance.
+              If you don't receive a response through our contact form, please reach out to us on <a href="https://www.voiceid.online/u/textcase?ref=textcase" target="_blank" rel="noopener noreferrer">VoiceID</a> for faster assistance.
                </div>
       </section>
     </motion.div>
