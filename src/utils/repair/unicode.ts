@@ -5,10 +5,12 @@ export function repairUnicode(text: string): { repairedText: string; hiddenRemov
   let hiddenRemoved = 0;
   let unicodeNormalized = 0;
 
-  // 1. Process Hidden Unicode characters (category: "unicode" and rule id starts with "unicode-zw" / "unicode-bom" / "unicode-ltr" / "unicode-rtl" / "unicode-wj" / "unicode-orc" / "unicode-softhyphen" / "unicode-hairspace" / "unicode-thinspace" / "unicode-nbsp")
+  // 1. Process removable hidden Unicode characters.
+  // ZWJ and ZWNJ are intentionally excluded because they can be meaningful
+  // in emoji sequences and complex-script text (for example, Hindi).
   const hiddenRules = REPAIR_RULES.filter(
     r => r.category === "unicode" && 
-    ["unicode-zwsp", "unicode-zwj", "unicode-zwnj", "unicode-bom", "unicode-ltr", "unicode-rtl", "unicode-wj", "unicode-orc", "unicode-softhyphen", "unicode-hairspace", "unicode-thinspace", "unicode-nbsp"].includes(r.id) &&
+    ["unicode-zwsp", "unicode-bom", "unicode-ltr", "unicode-rtl", "unicode-wj", "unicode-orc", "unicode-softhyphen", "unicode-hairspace", "unicode-thinspace", "unicode-nbsp"].includes(r.id) &&
     r.enabled
   );
 

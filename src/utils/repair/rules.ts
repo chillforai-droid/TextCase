@@ -226,24 +226,24 @@ export const REPAIR_RULES: RepairRule[] = [
   },
   {
     id: "unicode-zwj",
-    name: "Remove Zero-Width Joiner",
+    name: "Preserve Zero-Width Joiner",
     category: "unicode",
     description: "Deletes invisible Zero-Width Joiner characters (U+200D).",
     regex: /\u200D/g,
     replacement: "",
     priority: 31,
-    enabled: true,
+    enabled: false,
     example: "word\u200Dword"
   },
   {
     id: "unicode-zwnj",
-    name: "Remove Zero-Width Non-Joiner",
+    name: "Preserve Zero-Width Non-Joiner",
     category: "unicode",
     description: "Deletes invisible Zero-Width Non-Joiner characters (U+200C).",
     regex: /\u200C/g,
     replacement: "",
     priority: 32,
-    enabled: true,
+    enabled: false,
     example: "word\u200Cword"
   },
   {
