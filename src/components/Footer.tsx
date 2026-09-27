@@ -1,4 +1,5 @@
 import { ActivePage } from "../types";
+import { Link } from "react-router-dom";
 import { CheckSquare, ShieldCheck, Cpu, ArrowUpRight } from "lucide-react";
 
 interface FooterProps {
@@ -71,44 +72,39 @@ export default function Footer({ setActivePage, setCurrentLandingPage }: FooterP
               </h3>
               <ul className="mt-4 space-y-2.5">
                 <li>
-                  <button
-                    onClick={() => handleLandingPageLink("default")}
-                    className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-950 dark:hover:text-white focus:outline-none text-left cursor-pointer font-medium"
-                  >
+                  <Link to="/" className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-950 dark:hover:text-white focus:outline-none text-left cursor-pointer font-medium">
                     Smart Fixer (Default)
-                  </button>
+                  </Link>
                 </li>
                 <li>
-                  <button
-                    onClick={() => handleLandingPageLink("fix-chatgpt-formatting")}
-                    className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-950 dark:hover:text-white focus:outline-none text-left cursor-pointer font-medium"
-                  >
+                  <Link to="/fix-chatgpt-formatting" className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-950 dark:hover:text-white focus:outline-none text-left cursor-pointer font-medium">
                     Fix ChatGPT Formatting
-                  </button>
+                  </Link>
                 </li>
                 <li>
-                  <button
-                    onClick={() => handleLandingPageLink("fix-pdf-text")}
-                    className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-950 dark:hover:text-white focus:outline-none text-left cursor-pointer font-medium"
-                  >
+                  <Link to="/fix-pdf-text" className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-950 dark:hover:text-white focus:outline-none text-left cursor-pointer font-medium">
                     PDF Text Repair
-                  </button>
+                  </Link>
                 </li>
                 <li>
-                  <button
-                    onClick={() => handleLandingPageLink("fix-copy-paste-text")}
-                    className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-950 dark:hover:text-white focus:outline-none text-left cursor-pointer font-medium"
-                  >
+                  <Link to="/fix-copy-paste-text" className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-950 dark:hover:text-white focus:outline-none text-left cursor-pointer font-medium">
                     Copy-Paste Cleaner
-                  </button>
+                  </Link>
                 </li>
                 <li>
-                  <button
-                    onClick={() => handleLandingPageLink("remove-hidden-unicode")}
-                    className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-950 dark:hover:text-white focus:outline-none text-left cursor-pointer font-medium"
-                  >
+                  <Link to="/remove-hidden-unicode" className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-950 dark:hover:text-white focus:outline-none text-left cursor-pointer font-medium">
                     Remove Hidden Unicode
-                  </button>
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/repair-text" className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-950 dark:hover:text-white focus:outline-none text-left cursor-pointer font-medium">
+                    Repair Text
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/case-converter" className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-950 dark:hover:text-white focus:outline-none text-left cursor-pointer font-medium">
+                    Case Converter
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -128,49 +124,29 @@ export default function Footer({ setActivePage, setCurrentLandingPage }: FooterP
                   </button>
                 </li>
                 <li>
-                  <button
-                    onClick={() => handlePageLink("blog")}
-                    className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-950 dark:hover:text-white focus:outline-none cursor-pointer font-medium"
-                    id="footer-link-blog"
-                  >
+                  <Link to="/blog" className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-950 dark:hover:text-white focus:outline-none cursor-pointer font-medium" id="footer-link-blog">
                     How-To Guides
-                  </button>
+                  </Link>
                 </li>
                 <li>
-                  <button
-                    onClick={() => handlePageLink("roadmap")}
-                    className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-950 dark:hover:text-white focus:outline-none cursor-pointer font-medium"
-                    id="footer-link-roadmap"
-                  >
+                  <Link to="/roadmap" className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-950 dark:hover:text-white focus:outline-none cursor-pointer font-medium" id="footer-link-roadmap">
                     Product Roadmap
-                  </button>
+                  </Link>
                 </li>
                 <li>
-                  <button
-                    onClick={() => handlePageLink("changelog")}
-                    className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-950 dark:hover:text-white focus:outline-none cursor-pointer font-medium"
-                    id="footer-link-changelog"
-                  >
+                  <Link to="/changelog" className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-950 dark:hover:text-white focus:outline-none cursor-pointer font-medium" id="footer-link-changelog">
                     System Changelog
-                  </button>
+                  </Link>
                 </li>
                 <li>
-                  <button
-                    onClick={() => handlePageLink("feedback")}
-                    className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-950 dark:hover:text-white focus:outline-none cursor-pointer font-medium"
-                    id="footer-link-feedback"
-                  >
+                  <Link to="/feedback" className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-950 dark:hover:text-white focus:outline-none cursor-pointer font-medium" id="footer-link-feedback">
                     Feedback Board
-                  </button>
+                  </Link>
                 </li>
                 <li>
-                  <button
-                    onClick={() => handlePageLink("about")}
-                    className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-950 dark:hover:text-white focus:outline-none cursor-pointer font-medium"
-                    id="footer-link-about"
-                  >
+                  <Link to="/about" className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-950 dark:hover:text-white focus:outline-none cursor-pointer font-medium" id="footer-link-about">
                     About TextCase
-                  </button>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -181,40 +157,24 @@ export default function Footer({ setActivePage, setCurrentLandingPage }: FooterP
               </h3>
               <ul className="mt-4 space-y-3">
                 <li>
-                  <button
-                    onClick={() => handlePageLink("privacy")}
-                    className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-950 dark:hover:text-white focus:outline-none cursor-pointer font-medium"
-                    id="footer-link-privacy"
-                  >
+                  <Link to="/privacy" className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-950 dark:hover:text-white focus:outline-none cursor-pointer font-medium" id="footer-link-privacy">
                     Privacy Policy
-                  </button>
+                  </Link>
                 </li>
                 <li>
-                  <button
-                    onClick={() => handlePageLink("terms")}
-                    className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-950 dark:hover:text-white focus:outline-none cursor-pointer font-medium"
-                    id="footer-link-terms"
-                  >
+                  <Link to="/terms" className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-950 dark:hover:text-white focus:outline-none cursor-pointer font-medium" id="footer-link-terms">
                     Terms of Service
-                  </button>
+                  </Link>
                 </li>
                 <li>
-                  <button
-                    onClick={() => handlePageLink("sitemap")}
-                    className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-950 dark:hover:text-white focus:outline-none cursor-pointer font-medium"
-                    id="footer-link-sitemap"
-                  >
+                  <Link to="/sitemap" className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-950 dark:hover:text-white focus:outline-none cursor-pointer font-medium" id="footer-link-sitemap">
                     Sitemap XML
-                  </button>
+                  </Link>
                 </li>
                 <li>
-                  <button
-                    onClick={() => handlePageLink("robots")}
-                    className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-950 dark:hover:text-white focus:outline-none cursor-pointer font-medium"
-                    id="footer-link-robots"
-                  >
+                  <Link to="/robots" className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-950 dark:hover:text-white focus:outline-none cursor-pointer font-medium" id="footer-link-robots">
                     Robots.txt
-                  </button>
+                  </Link>
                 </li>
                 <li>
                   <a
@@ -269,13 +229,13 @@ export default function Footer({ setActivePage, setCurrentLandingPage }: FooterP
             &copy; 2026 TextCase. Built with precision. All text remains safely on your computer.
           </p>
           <div className="flex gap-4">
-            <button
-              onClick={() => handlePageLink("contact")}
+            <Link
+              to="/contact"
               className="text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-gray-950 dark:hover:text-white cursor-pointer"
               id="footer-link-contact"
             >
               Contact Support
-            </button>
+            </Link>
           </div>
         </div>
       </div>
