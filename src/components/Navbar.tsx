@@ -21,6 +21,7 @@ export default function Navbar({ activePage, setActivePage, theme, setTheme }: N
     { label: "Changelog", page: "changelog" },
     { label: "Feedback", page: "feedback" },
     { label: "About", page: "about" },
+    { label: "Prompt Store", page: "prompt-store" },
   ];
 
   const handleNav = (page: ActivePage) => {

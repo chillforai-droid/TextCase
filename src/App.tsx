@@ -38,6 +38,7 @@ const FeedbackPage = React.lazy(() => import("./components/FeedbackPage"));
 const RoadmapPage = React.lazy(() => import("./components/RoadmapPage"));
 const ChangelogPage = React.lazy(() => import("./components/ChangelogPage"));
 const BlogSection = React.lazy(() => import("./components/BlogSection"));
+const PromptStorePage = React.lazy(() => import("./pages/PromptStorePage"));
 
 import { repairSessionService } from "./services/repairSessionService";
 import { feedbackService } from "./services/feedbackService";
@@ -178,6 +179,8 @@ function AppContent() {
       setActivePage("roadmap");
     } else if (path === "/changelog") {
       setActivePage("changelog");
+    } else if (path === "/prompt-store" || path.startsWith("/prompt-store/")) {
+      setActivePage("prompt-store");
     } else {
       // Check if the parameter matches a specialized landing page
       let pageKey = path.substring(1);
@@ -259,6 +262,8 @@ function AppContent() {
       navigate("/");
     } else if (page === "blog-post") {
       navigate("/blog");
+    } else if (page === "prompt-store") {
+      navigate("/prompt-store");
     } else {
       navigate(`/${page}`);
     }
@@ -328,9 +333,6 @@ function AppContent() {
     setInputText(result.repairedText);
     setRepairSummary(result.summary);
     setIsRepaired(true);
-    // Open the before/after preview automatically after every repair.
-    // This only changes the UI state; SEO files and routes remain untouched.
-    setActiveTab("compare");
 
     // Calc total problems fixed
     const totalFixed = Object.values(result.summary).reduce((sum, val) => sum + val, 0);
@@ -617,6 +619,9 @@ function AppContent() {
               <Route path="/feedback" element={<FeedbackPage triggerToast={triggerToast} />} />
               <Route path="/roadmap" element={<RoadmapPage />} />
               <Route path="/changelog" element={<ChangelogPage />} />
+              <Route path="/prompt-store" element={<PromptStorePage />} />
+              <Route path="/prompt-store/:categorySlug" element={<PromptStorePage />} />
+              <Route path="/prompt-store/:categorySlug/:promptSlug" element={<PromptStorePage />} />
 
               {/* Dynamic specialty landing page routes */}
               <Route

@@ -10,7 +10,8 @@ export type ActivePage =
   | "robots"
   | "feedback"
   | "roadmap"
-  | "changelog";
+  | "changelog"
+  | "prompt-store";
 
 export interface BlogArticle {
   id: string;
