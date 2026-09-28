@@ -23,6 +23,7 @@ import Toast from "./components/Toast";
 import SEO from "./components/SEO";
 import AuditReportModal from "./components/AuditReportModal";
 import FeedbackModal from "./components/FeedbackModal";
+import PromptAdminPage from "./pages/PromptAdminPage";
 import VoiceIDPromo from "./components/VoiceIDPromo";
 
 // Lazy-load sub-pages for lightning-fast bundles
@@ -197,6 +198,8 @@ function AppContent() {
       }
     }
   }, [location.pathname]);
+
+  if (location.pathname === "/prompt-admin") return <PromptAdminPage />;
 
   // Sync input text with active landing page sample when input is empty
   useEffect(() => {

@@ -81,8 +81,7 @@ function getRouteSEO(pathname: string, suppliedPage?: LandingPage): RouteSEO {
     "/changelog": { title: "TextCase Changelog", description: "See recent product updates and changes to TextCase." },
     "/feedback": { title: "TextCase Feedback", description: "Send feedback and suggestions for improving TextCase." },
     "/sitemap": { title: "TextCase Sitemap", description: "Browse the main pages and tools available on TextCase." },
-    "/robots": { title: "TextCase Robots.txt", description: "View the robots.txt information for TextCase." },
-    "/prompt-store": { title: "Prompt Store – AI Prompts by Category | TextCase", description: "Browse practical AI prompts organized by category. Find, copy and use prompts for writing, marketing, coding, SEO, research and everyday tasks." }
+    "/robots": { title: "TextCase Robots.txt", description: "View the robots.txt information for TextCase." }
   };
 
   const staticPage = staticPages[pathname];

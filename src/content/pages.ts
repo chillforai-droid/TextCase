@@ -470,91 +470,58 @@ Let's normalize the whitespace.`,
   "repair-text": {
     id: "repair-text",
     slug: "repair-text",
-    title: "Text Repair Tool",
-    h1: "Repair Messy Text Online — Fix Broken Formatting",
-    subtitle: "Clean broken line breaks, spacing mistakes, repeated punctuation, copied-text glitches, and common formatting problems in one private browser-based workspace.",
-    metaTitle: "Text Repair Tool Online – Fix Broken Text & Formatting | TextCase",
-    metaDesc: "Repair messy copied text online. Fix broken line breaks, extra spaces, repeated punctuation, smart quotes, and common formatting issues directly in your browser with TextCase.",
-    metaDescription: "Repair messy copied text online. Fix broken line breaks, extra spaces, repeated punctuation, smart quotes, and common formatting issues directly in your browser with TextCase.",
-    sampleText: `Project update , ,
-The latest copy-paste contains broken line
-breaks, extra   spaces, and repeated punctuation!!
-
-The repair tool should preserve meaningful indentation:
-    const message = "Keep this indentation";
-
-It should also keep Hindi text और joined emoji 👨‍👩‍👧‍👦 intact.`,
-    keywords: [
-      "text repair",
-      "repair text online",
-      "text fixer",
-      "fix broken text",
-      "clean messy text",
-      "fix line breaks",
-      "remove extra spaces",
-      "repair copied text",
-      "fix punctuation spacing"
-    ],
+    title: "Repair Text",
+    h1: "Comprehensive Online Text Restorer",
+    subtitle: "The ultimate text sanitizer re-aligning broken sentences, typography mistakes, and web clipping artifacts.",
+    metaTitle: "Repair Text Formatting & Restore Broken Layouts | TextCase",
+    metaDesc: "The ultimate free, in-browser text repair utility. Automatically fix split sentences, smart quotes, bad line breaks, and duplicate punctuation.",
+    metaDescription: "The ultimate free, in-browser text repair utility. Automatically fix split sentences, smart quotes, bad line breaks, and duplicate punctuation.",
+    sampleText: `Dear client ,
+The "Smart Repair" system can identify smart quotes , double commas , ,
+and broken line endings that occur mid-sentence.
+We want to re-align this prose.`,
+    keywords: ["Comprehensive text fixer", "Online layout restorer", "Splicing sentences", "Typography errors", "Clean copy-paste text"],
     canonical: `${APP_URL}/repair-text`,
-    heroTitle: "Repair Messy Text Online — Fix Broken Formatting",
-    heroDescription: "Repair copied text with broken line breaks, unwanted spaces, repeated punctuation, and common formatting glitches while reviewing every change in the Diff Auditor.",
-    problemDescription: "Text can become difficult to use after it is copied from PDFs, websites, chat apps, OCR output, email threads, or documents. Hard line breaks may split a sentence, extra spaces may appear around punctuation, repeated symbols can reduce readability, and invisible characters can create confusing results. A repair tool should improve the text without blindly destroying code indentation, meaningful whitespace, Hindi characters, or joined emoji.",
-    solutionDescription: "TextCase combines text analysis, targeted repair rules, and a Before vs After Diff Auditor in one browser-based workspace. It can help clean common spacing and punctuation issues, reconnect suitable broken lines, and surface formatting changes for review. The repair result should always be checked in the comparison view, especially when the text contains code, lists, tables, multilingual characters, or intentional indentation.",
+    heroTitle: "Comprehensive Online Text Restorer",
+    heroDescription: "The ultimate text sanitizer re-aligning broken sentences, typography mistakes, and web clipping artifacts.",
+    problemDescription: "Text formatting breaks easily when moved between modern messaging systems, PDF files, legacy document formats, and databases. Standard text fixers only allow simple find-and-replace, requiring you to painstakingly locate and fix errors manually.",
+    solutionDescription: "TextCase's repair engine combines all cleaning systems (PDF splicing, OCR correction, spacing normalizer, markdown washing, smart-to-straight quote conversions, and invisible character scanning) into a single unified workspace.",
     examples: [
       {
-        input: "The system , , is ready !!",
-        output: "The system, is ready!"
+        input: "The system , , is ready.",
+        output: "The system, is ready."
       },
       {
-        input: "This sentence is split\nacross a normal line break.",
-        output: "This sentence is split across a normal line break."
-      },
-      {
-        input: "Project   status:   ready\nNext step: review",
-        output: "Project status: ready\nNext step: review"
-      },
-      {
-        input: "Hindi: कर्मचारी\nEmoji: 👨‍👩‍👧‍👦\n    const value = true;",
-        output: "Hindi: कर्मचारी\nEmoji: 👨‍👩‍👧‍👦\n    const value = true;"
+        input: "Sentence split\nmid-flow is joined.",
+        output: "Sentence split mid-flow is joined."
       }
     ],
-    relatedPages: ["remove-extra-spaces", "fix-copy-paste-text", "fix-pdf-text", "fix-ocr-text", "remove-hidden-unicode"],
+    relatedPages: ["fix-pdf-text", "fix-chatgpt-formatting", "fix-copy-paste-text", "remove-hidden-unicode"],
     faq: [
       {
-        question: "What kind of text can I repair with TextCase?",
-        answer: "You can use the workspace for common copied-text problems such as unwanted spaces, spacing around punctuation, suitable broken line breaks, repeated punctuation, and other formatting irregularities. Always review the comparison before using the result in an important document."
+        question: "Is the text repair accurate?",
+        answer: "Yes. Our heuristic rules examine neighboring character types to ensure spelling remains pristine while repairing grammar spaces."
       },
       {
-        question: "Will TextCase remove code indentation or meaningful whitespace?",
-        answer: "The repair workflow is designed to avoid treating every leading space as an error. Still, code, tables, lists, and intentionally indented text should be checked in the Before vs After Diff Auditor before you copy or export the repaired result."
+        question: "Do you offer API support?",
+        answer: "TextCase is a 100% offline client application, meaning the repair engine runs in your browser. This keeps the application completely free and infinitely scalable."
       },
       {
-        question: "Does TextCase support Hindi and emoji?",
-        answer: "The repair workflow is intended to preserve normal Unicode text, including Hindi characters and joined emoji. Review the comparison when your text contains complex scripts, zero-width characters, or emoji sequences."
-      },
-      {
-        question: "Can I see what changed after repair?",
-        answer: "Yes. After a repair, open the Diff Auditor to compare the original source with the repaired text in Side-by-Side or Unified Diff mode. This helps you review changes before copying or exporting."
-      },
-      {
-        question: "Is my text uploaded to a server?",
-        answer: "The repair workflow is designed to run in your browser. Do not paste highly sensitive information into any online tool unless you have reviewed its privacy and processing behavior on your device."
-      },
-      {
-        question: "Should I use TextCase for every type of document?",
-        answer: "TextCase is most useful for messy copied text and common formatting problems. For legal, financial, technical, or highly structured documents, keep the original file and manually verify the repaired output before publishing or submitting it."
+        question: "Will my formatting keep its italic or bold attributes?",
+        answer: "This is a plain-text utility designed to deliver standard, clean, unformatted text files perfect for code repositories, emails, or drafts."
       }
     ],
     schema: JSON.stringify({
       "@context": "https://schema.org",
       "@type": "WebApplication",
-      "name": "TextCase Text Repair Tool",
+      "name": "TextCase Online Text Restorer",
       "url": `${APP_URL}/repair-text`,
-      "description": "Repair common copied-text formatting problems with a browser-based text repair workspace and Before vs After comparison.",
+      "description": "The ultimate browser-based text layout, paragraph, punctuation, and Unicode sanitizer.",
       "applicationCategory": "UtilityApplication",
       "operatingSystem": "All"
     })
   },
+
   "case-converter": {
     id: "case-converter",
     slug: "case-converter",
