@@ -2,7 +2,18 @@
   "redirects": [
     {
       "source": "/fix-copy-paste",
-      "destination": "/fix-copy-paste-text",
+      "destination": "https://www.textcase.in/fix-copy-paste-text",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "textcase.in"
+        }
+      ],
+      "destination": "https://www.textcase.in/:path*",
       "permanent": true
     }
   ],

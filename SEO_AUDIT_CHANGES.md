@@ -1,24 +1,35 @@
-# TextCase SEO & Promotion Audit Changes
+# TextCase SEO + Build Fixes
 
-Date: 2026-09-18
+## What was fixed
 
-## Safe SEO fixes
-- Preserved all existing landing-page URLs.
-- Added a permanent Vercel redirect from the legacy `/fix-copy-paste` URL to `/fix-copy-paste-text`.
-- Updated internal footer linking to use the canonical copy-paste URL directly.
-- Expanded `public/sitemap.xml` to include all current landing pages and all existing blog article URLs.
-- Removed obsolete `changefreq`/`priority` noise from the sitemap and kept accurate `lastmod` values for the current update.
-- Removed the obsolete FAQ rich-result JSON-LD implementation while keeping visible FAQ content.
-- Fixed route-aware metadata so About, Contact, Privacy, Terms, Blog, Blog articles, Roadmap, Changelog, Feedback, Sitemap, Robots, and landing pages get their own title, description, canonical, Open Graph metadata, and appropriate structured data.
-- Added Article structured data for blog posts.
-- Kept SoftwareApplication structured data for the actual TextCase landing pages.
-- Kept canonical URLs on the current `/fix-copy-paste-text` path and did not delete any existing content page.
+- Standardized the production canonical host on `https://www.textcase.in`.
+- Added a single Vercel redirect from the non-www host to the www host.
+- Kept the legacy `/fix-copy-paste` URL as a direct 301 to `/fix-copy-paste-text` on the canonical host.
+- Updated `robots.txt`, `sitemap.xml`, `index.html`, route SEO metadata, and page canonical URLs to the same host.
+- Removed low-value product-status routes from the XML sitemap and added the public Prompt Store root.
+- Added `Disallow: /prompt-admin` to robots.txt.
+- Converted footer navigation from JavaScript buttons to real crawlable `<a href>` links.
+- Added build-time route prerendering for all sitemap URLs so each route receives its own title, description, Open Graph metadata, and canonical URL in the initial HTML response.
+- Fixed the `/prompt-admin` conditional return so it no longer changes React Hook order.
+- Fixed Prompt Admin category/prompt save modals so their Save buttons submit the actual forms.
+- Fixed a syntax error in the Prompt Admin prompts table that prevented TypeScript compilation.
+- Kept the existing Word-compatible `.doc` exporter label accurate rather than claiming it produces a real OOXML `.docx` file.
 
-## Cross-site promotion
-- Added a lightweight VoiceID promotion block globally before the footer, so it appears naturally across the site's routes.
-- VoiceID copy is contextual and non-aggressive: it is presented as another tool from the creator rather than as an unrelated advertisement.
-- Existing Texly promotion remains in the landing-page tool experience.
+## Verification performed here
 
-## Deployment note
-- The project is configured for Vercel SPA rewrites with the legacy URL redirect evaluated before the catch-all rewrite.
-- After deployment, submit/refresh `https://textcase.in/sitemap.xml` in Google Search Console and inspect the key URLs, especially `/`, `/repair-text`, `/fix-chatgpt-formatting`, `/fix-pdf-text`, and `/fix-copy-paste-text`.
+- All `.ts` and `.tsx` files pass TypeScript parser/syntax validation.
+- Vercel build could not be executed in this environment because the uploaded project's npm dependency installation could not complete; the local `node_modules` snapshot was incomplete and did not contain Vite.
+- The new prerender script was executed independently against a test `dist/index.html` and successfully generated 21 route HTML files with route-specific titles and canonicals.
+- `package.json` and `package-lock.json` root dependency definitions match.
+
+## Before production deployment
+
+Run:
+
+```bash
+npm ci
+npm run lint
+npm run build
+```
+
+Then deploy the generated project to Vercel and submit the canonical `https://www.textcase.in/sitemap.xml` in Google Search Console.

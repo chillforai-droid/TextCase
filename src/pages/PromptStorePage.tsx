@@ -9,7 +9,7 @@ import {
   getPublishedPromptsByCategory,
 } from "../services/promptStoreService";
 
-const BASE_URL = "https://textcase.in";
+const BASE_URL = "https://www.textcase.in";
 
 function setPromptSEO(title: string, description: string, canonical: string, type: "website" | "article" = "website") {
   document.title = title;

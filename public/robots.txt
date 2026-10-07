@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /prompt-admin
+Disallow: /api/
 
-Sitemap: https://textcase.in/sitemap.xml
+Sitemap: https://www.textcase.in/sitemap.xml

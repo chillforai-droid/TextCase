@@ -188,12 +188,29 @@ function AdminCategories({categories,prompts,refresh,notify}:{categories:Categor
 }
 
 function AdminPrompts({categories,prompts,refresh,notify}:{categories:Category[];prompts:Prompt[];refresh:()=>Promise<void>;notify:(s:string)=>void}){
-  const [query,setQuery]=useState(""); const [cat,setCat]=useState(""); const [editing,setEditing]=useState<Prompt|null>(null); const [creating,setCreating]=useState(false);
-  const list=prompts.filter(p=>(!cat||p.category_id===cat)&&`${p.title} ${p.slug} ${(p.tags||[]).join(" ")}`.toLowerCase().includes(query.toLowerCase()));
-  async function remove(p:Prompt){if(!confirm(`Delete "${p.title}"?`))return;const {error}=await supabase.from("prompts").delete().eq("id",p.id);if(error)notify(error.message);else{notify("Prompt deleted.");await refresh()}}
-  return <div><PageHead title="Prompts" text="Create, edit and publish individual prompt pages." button="New prompt" disabled={!categories.length} onClick={()=>setCreating(true)}/>
-    <div className="mb-4 flex flex-wrap gap-2"><div className="relative min-w-[240px] flex-1"><Search className="absolute left-3 top-3 text-gray-400" size={17}/><input className="w-full rounded-xl border border-gray-200 bg-white py-2.5 pl-10 pr-3 outline-none focus:border-blue-500" placeholder="Search prompts or tags…" value={query} onChange={e=>setQuery(e.target.value)}/></div><select className="rounded-xl border border-gray-200 bg-white px-3 py-2.5" value={cat} onChange={e=>setCat(e.target.value)}><option value="">All categories</option>{categories.map(c=><option key={c.id} value={c.id}>{c.name}</option>)}</select><span className="self-center text-xs text-gray-500">{list.length} prompts</span></div>
-    <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white"><div className="overflow-x-auto"><table className="w-full min-w-[760px] text-left text-sm"><thead className="bg-gray-50 text-xs uppercase text-gray-500"><tr><th className="px-5 py-3">Prompt</th><th>Category</th><th>Status</th><th>Order</th><th/></tr></thead><tbody>{list.map(p=><tr key={p.id} className="border-t border-gray-100"><td className="px-5 py-4"><b>{p.title}</b><small className="block max-w-sm truncate text-gray-400">{p.short_description}</small></td><td>{p.category?.name||"—"}</td><td><Status published={p.is_published}/></td><td>{p.sort_order}</td><td className="pr-4 text-right"><button className="p-2 text-gray-500" onClick={()=>setEditing(p)}><Edit3 size={17}/></button><button className="p-2 text-red-500" onClick={()=>remove(p)}><Trash2 size={17}/></button></td></tr>)}</tbody></table></div>{!list.length&&<Empty text={categories.length?"No prompts found.":"Create a category first."/>}</div>
+  const [query,setQuery]=useState("");
+  const [cat,setCat]=useState("");
+  const [editing,setEditing]=useState<Prompt|null>(null);
+  const [creating,setCreating]=useState(false);
+  const list=prompts.filter((prompt)=>(!cat||prompt.category_id===cat)&&`${prompt.title} ${prompt.slug} ${(prompt.tags||[]).join(" ")}`.toLowerCase().includes(query.toLowerCase()));
+  async function remove(prompt:Prompt){
+    if(!confirm(`Delete "${prompt.title}"?`)) return;
+    const {error}=await supabase.from("prompts").delete().eq("id",prompt.id);
+    if(error) notify(error.message); else { notify("Prompt deleted."); await refresh(); }
+  }
+  return <div>
+    <PageHead title="Prompts" text="Create, edit and publish individual prompt pages." button="New prompt" disabled={!categories.length} onClick={()=>setCreating(true)}/>
+    <div className="mb-4 flex flex-wrap gap-2">
+      <div className="relative min-w-[240px] flex-1"><Search className="absolute left-3 top-3 text-gray-400" size={17}/><input className="w-full rounded-xl border border-gray-200 bg-white py-2.5 pl-10 pr-3 outline-none focus:border-blue-500" placeholder="Search prompts or tags…" value={query} onChange={e=>setQuery(e.target.value)}/></div>
+      <select className="rounded-xl border border-gray-200 bg-white px-3 py-2.5" value={cat} onChange={e=>setCat(e.target.value)}><option value="">All categories</option>{categories.map(c=><option key={c.id} value={c.id}>{c.name}</option>)}</select>
+      <span className="self-center text-xs text-gray-500">{list.length} prompts</span>
+    </div>
+    <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white">
+      <div className="overflow-x-auto"><table className="w-full min-w-[760px] text-left text-sm"><thead className="bg-gray-50 text-xs uppercase text-gray-500"><tr><th className="px-5 py-3">Prompt</th><th>Category</th><th>Status</th><th>Order</th><th /></tr></thead><tbody>
+        {list.map((prompt)=><tr key={prompt.id} className="border-t border-gray-100"><td className="px-5 py-4"><b>{prompt.title}</b><small className="block max-w-sm truncate text-gray-400">{prompt.short_description}</small></td><td>{prompt.category?.name || "—"}</td><td><Status published={prompt.is_published}/></td><td>{prompt.sort_order}</td><td className="pr-4 text-right"><button className="p-2 text-gray-500" onClick={()=>setEditing(prompt)}><Edit3 size={17}/></button><button className="p-2 text-red-500" onClick={()=>remove(prompt)}><Trash2 size={17}/></button></td></tr>)}
+      </tbody></table></div>
+      {!list.length && <Empty text={categories.length ? "No prompts found." : "Create a category first."}/>} 
+    </div>
     {(creating||editing)&&<PromptModal initial={editing||undefined} categories={categories} close={()=>{setCreating(false);setEditing(null)}} saved={async()=>{setCreating(false);setEditing(null);await refresh();notify("Prompt saved.")}}/>}
   </div>;
 }
@@ -207,7 +224,7 @@ function CategoryModal({initial,close,saved}:{initial?:Category;close:()=>void;s
   const [form,setForm]=useState<any>(initial?{...initial}:{...emptyCategory}); const [busy,setBusy]=useState(false);
   const u=(k:string,v:any)=>setForm((f:any)=>({...f,[k]:v}));
   async function save(e:FormEvent){e.preventDefault();setBusy(true);const payload={name:form.name.trim(),slug:slugify(form.slug||form.name),description:form.description.trim(),seo_title:form.seo_title?.trim()||null,seo_description:form.seo_description?.trim()||null,is_published:form.is_published,sort_order:Number(form.sort_order)||0,updated_at:new Date().toISOString()};const q=initial?supabase.from("prompt_categories").update(payload).eq("id",initial.id):supabase.from("prompt_categories").insert(payload);const {error}=await q;if(error)alert(error.message);else await saved();setBusy(false)}
-  return <Modal title={initial?"Edit category":"New category"} close={close}><div className="grid gap-4 p-5 sm:grid-cols-2">
+  return <Modal title={initial?"Edit category":"New category"} close={close}><form onSubmit={save} className="grid gap-4 p-5 sm:grid-cols-2">
     <Field label="Name"><input required value={form.name} onChange={e=>u("name",e.target.value)} onBlur={()=>!initial&&u("slug",slugify(form.name))}/></Field>
     <Field label="Slug"><input required value={form.slug} onChange={e=>u("slug",e.target.value)}/></Field>
     <Field label="Description" full><textarea rows={3} value={form.description} onChange={e=>u("description",e.target.value)}/></Field>
@@ -216,14 +233,14 @@ function CategoryModal({initial,close,saved}:{initial?:Category;close:()=>void;s
     <Field label="Sort order"><input type="number" value={form.sort_order} onChange={e=>u("sort_order",e.target.value)}/></Field>
     <label className="flex items-center gap-2 text-sm font-semibold"><input type="checkbox" checked={form.is_published} onChange={e=>u("is_published",e.target.checked)}/> Published</label>
     <ModalActions busy={busy} close={close} label="Save category"/>
-  </div></Modal>;
+  </form></Modal>;
 }
 
 function PromptModal({initial,categories,close,saved}:{initial?:Prompt;categories:Category[];close:()=>void;saved:()=>Promise<void>}){
   const [form,setForm]=useState<any>(initial?{...initial,tags:(initial.tags||[]).join(", ")}:{...emptyPrompt,category_id:categories[0]?.id||""});const [busy,setBusy]=useState(false);
   const u=(k:string,v:any)=>setForm((f:any)=>({...f,[k]:v}));
   async function save(e:FormEvent){e.preventDefault();setBusy(true);const payload={category_id:form.category_id,title:form.title.trim(),slug:slugify(form.slug||form.title),short_description:form.short_description.trim(),prompt_text:form.prompt_text,use_case:form.use_case?.trim()||null,tags:csvTags(form.tags||""),is_published:form.is_published,sort_order:Number(form.sort_order)||0,updated_at:new Date().toISOString()};const q=initial?supabase.from("prompts").update(payload).eq("id",initial.id):supabase.from("prompts").insert(payload);const {error}=await q;if(error)alert(error.message);else await saved();setBusy(false)}
-  return <Modal title={initial?"Edit prompt":"New prompt"} close={close}><div className="grid gap-4 p-5 sm:grid-cols-2">
+  return <Modal title={initial?"Edit prompt":"New prompt"} close={close}><form onSubmit={save} className="grid gap-4 p-5 sm:grid-cols-2">
     <Field label="Title"><input required value={form.title} onChange={e=>u("title",e.target.value)} onBlur={()=>!initial&&u("slug",slugify(form.title))}/></Field>
     <Field label="Category"><select required value={form.category_id} onChange={e=>u("category_id",e.target.value)}>{categories.map(c=><option key={c.id} value={c.id}>{c.name}</option>)}</select></Field>
     <Field label="Slug"><input required value={form.slug} onChange={e=>u("slug",e.target.value)}/></Field>
@@ -234,7 +251,7 @@ function PromptModal({initial,categories,close,saved}:{initial?:Prompt;categorie
     <Field label="Tags (comma separated)"><input value={form.tags} onChange={e=>u("tags",e.target.value)}/></Field>
     <label className="flex items-center gap-2 text-sm font-semibold"><input type="checkbox" checked={form.is_published} onChange={e=>u("is_published",e.target.checked)}/> Published</label>
     <ModalActions busy={busy} close={close} label="Save prompt"/>
-  </div></Modal>;
+  </form></Modal>;
 }
 function Field({label,children,full=false}:{label:string;children:React.ReactNode;full?:boolean}){return <label className={full?"sm:col-span-2 block text-sm font-semibold":"block text-sm font-semibold"}>{label}<span className="mt-1.5 block">{children}</span></label>}
 function Modal({title,children,close}:{title:string;children:React.ReactNode;close:()=>void}){return <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 p-4"><div className="max-h-[92vh] w-full max-w-3xl overflow-auto rounded-2xl bg-white shadow-2xl"><div className="flex items-center justify-between border-b p-4"><h2 className="font-black">{title}</h2><button onClick={close} className="rounded-lg p-2 hover:bg-gray-100"><X size={18}/></button></div>{children}</div></div>}

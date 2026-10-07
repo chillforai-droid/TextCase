@@ -29,7 +29,7 @@ export default function RobotsPage({ triggerToast }: RobotsPageProps) {
           <div className="relative rounded-xl bg-gray-950 p-5 font-mono text-sm text-gray-300 border border-gray-800">
             <button
               onClick={() => {
-                navigator.clipboard.writeText("User-agent: *\nAllow: /\nDisallow: /api/\nSitemap: https://textcase.in/sitemap.xml");
+                navigator.clipboard.writeText("User-agent: *\nAllow: /\nDisallow: /api/\nSitemap: https://www.textcase.in/sitemap.xml");
                 triggerToast("Robots.txt copied!", "success");
               }}
               className="absolute top-3 right-3 bg-gray-800 hover:bg-gray-700 text-white rounded px-2 py-1 text-xs cursor-pointer"
@@ -43,7 +43,7 @@ export default function RobotsPage({ triggerToast }: RobotsPageProps) {
               <div>Disallow: /api/</div>
               <br />
               <div><span className="text-blue-400"># Link sitemap location</span></div>
-              <div>Sitemap: https://textcase.in/sitemap.xml</div>
+              <div>Sitemap: https://www.textcase.in/sitemap.xml</div>
             </pre>
           </div>
         </div>

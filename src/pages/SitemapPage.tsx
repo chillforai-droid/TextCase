@@ -53,7 +53,7 @@ export default function SitemapPage({ triggerToast }: SitemapPageProps) {
           <div className="relative rounded-xl bg-gray-950 p-4 font-mono text-[11px] text-gray-300 border border-gray-800 overflow-x-auto">
             <button
               onClick={() => {
-                navigator.clipboard.writeText(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <url><loc>https://textcase.in/</loc><priority>1.0</priority></url>\n  <url><loc>https://textcase.in/blog</loc><priority>0.8</priority></url>\n  <url><loc>https://textcase.in/about</loc><priority>0.5</priority></url>\n  <url><loc>https://textcase.in/contact</loc><priority>0.5</priority></url>\n</urlset>`);
+                navigator.clipboard.writeText(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <url><loc>https://www.textcase.in/</loc><priority>1.0</priority></url>\n  <url><loc>https://www.textcase.in/blog</loc><priority>0.8</priority></url>\n  <url><loc>https://www.textcase.in/about</loc><priority>0.5</priority></url>\n  <url><loc>https://www.textcase.in/contact</loc><priority>0.5</priority></url>\n</urlset>`);
                 triggerToast("Raw Sitemap XML copied!", "success");
               }}
               className="absolute top-3 right-3 bg-gray-800 hover:bg-gray-700 text-white rounded px-2 py-1 text-[10px] cursor-pointer"
@@ -63,24 +63,24 @@ export default function SitemapPage({ triggerToast }: SitemapPageProps) {
             <pre>{`<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://textcase.in/</loc>
+    <loc>https://www.textcase.in/</loc>
     <lastmod>2026-07-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://textcase.in/blog</loc>
+    <loc>https://www.textcase.in/blog</loc>
     <lastmod>2026-07-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://textcase.in/about</loc>
+    <loc>https://www.textcase.in/about</loc>
     <lastmod>2026-07-13</lastmod>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://textcase.in/contact</loc>
+    <loc>https://www.textcase.in/contact</loc>
     <lastmod>2026-07-13</lastmod>
     <priority>0.5</priority>
   </url>

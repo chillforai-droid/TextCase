@@ -1,6 +1,6 @@
 import { LandingPage } from "../types";
 
-const APP_URL = "https://textcase.in";
+const APP_URL = "https://www.textcase.in";
 
 export const LANDING_PAGES: Record<string, LandingPage> = {
   default: {

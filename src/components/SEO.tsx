@@ -17,7 +17,7 @@ interface SEOProps {
   page?: LandingPage;
 }
 
-const BASE_DOMAIN = "https://textcase.in";
+const BASE_DOMAIN = "https://www.textcase.in";
 const DEFAULT_TITLE = "TextCase – Fix Broken Text Instantly";
 const DEFAULT_DESCRIPTION = "Repair broken copied text from ChatGPT, PDF, OCR, Markdown and Unicode instantly. Fast, free and browser-based.";
 

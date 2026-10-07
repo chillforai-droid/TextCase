@@ -199,8 +199,6 @@ function AppContent() {
     }
   }, [location.pathname]);
 
-  if (location.pathname === "/prompt-admin") return <PromptAdminPage />;
-
   // Sync input text with active landing page sample when input is empty
   useEffect(() => {
     const activeSample = LANDING_PAGES[currentLandingPage]?.sampleText || "";
@@ -277,6 +275,9 @@ function AppContent() {
     navigate(`/${key === "default" ? "" : key}`);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  // Keep this route outside the normal app shell, but only after all hooks have been declared.
+  if (location.pathname === "/prompt-admin") return <PromptAdminPage />;
 
   const handleClear = () => {
     setInputText("");

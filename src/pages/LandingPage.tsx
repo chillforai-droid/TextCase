@@ -298,7 +298,7 @@ export default function LandingPage({
                 <div>
                   <h4 className="text-sm font-bold text-gray-950 dark:text-gray-50">Safe Export & Save</h4>
                   <p className="mt-1 text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
-                    Export your repaired draft immediately as formatted TXT, MD, DOCX, or pure HTML markup files.
+                    Export your repaired draft immediately as formatted TXT, MD, Word-compatible DOC, or pure HTML markup files.
                   </p>
                 </div>
               </div>
