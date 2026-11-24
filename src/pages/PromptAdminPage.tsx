@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, ReactNode, useEffect, useMemo, useState } from "react";
 import {
   BarChart3, BookOpen, CheckCircle2, Edit3, FileText, LayoutDashboard,
   LogOut, Menu, Plus, RefreshCw, Search, ShieldCheck, Trash2, X
@@ -72,7 +72,7 @@ export default function PromptAdminPage() {
   return <AdminDashboard session={session} />;
 }
 
-function AdminCenter({children}:{children:React.ReactNode}) {
+function AdminCenter({children}:{children:ReactNode}) {
   return <div className="min-h-screen bg-gray-950 text-gray-100 flex items-center justify-center p-5">{children}</div>;
 }
 function AdminLoader(){ return <div className="flex flex-col items-center gap-3 text-gray-400"><div className="h-7 w-7 animate-spin rounded-full border-2 border-blue-500 border-t-transparent"/><span>Checking admin access…</span></div>; }
@@ -157,7 +157,7 @@ function AdminDashboard({session}:{session:any}){
   </div>;
 }
 
-function AdminNav({active,icon,label,onClick}:{active:boolean;icon:React.ReactNode;label:string;onClick:()=>void}){
+function AdminNav({active,icon,label,onClick}:{active:boolean;icon:ReactNode;label:string;onClick:()=>void}){
   return <button onClick={onClick} className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold ${active?"bg-blue-600 text-white":"text-gray-400 hover:bg-gray-900 hover:text-white"}`}>{icon}{label}</button>;
 }
 
@@ -174,7 +174,7 @@ function AdminOverview({categories,prompts,onPrompts}:{categories:Category[];pro
     <div className="mt-6 rounded-2xl border border-gray-200 bg-white p-5"><h2 className="font-bold">Quick status</h2><p className="mt-2 text-sm text-gray-500">Public Prompt Store only reads published rows. Drafts remain hidden by RLS.</p></div>
   </div>;
 }
-function Stat({icon,label,value,meta}:{icon:React.ReactNode;label:string;value:number;meta:string}){return <div className="rounded-2xl border border-gray-200 bg-white p-5"><div className="flex items-start gap-3"><div className="rounded-xl bg-gray-100 p-2">{icon}</div><div><p className="text-xs text-gray-500">{label}</p><p className="text-2xl font-black">{value}</p><p className="text-xs text-gray-400">{meta}</p></div></div></div>}
+function Stat({icon,label,value,meta}:{icon:ReactNode;label:string;value:number;meta:string}){return <div className="rounded-2xl border border-gray-200 bg-white p-5"><div className="flex items-start gap-3"><div className="rounded-xl bg-gray-100 p-2">{icon}</div><div><p className="text-xs text-gray-500">{label}</p><p className="text-2xl font-black">{value}</p><p className="text-xs text-gray-400">{meta}</p></div></div></div>}
 
 function AdminCategories({categories,prompts,refresh,notify}:{categories:Category[];prompts:Prompt[];refresh:()=>Promise<void>;notify:(s:string)=>void}){
   const [query,setQuery]=useState(""); const [editing,setEditing]=useState<Category|null>(null); const [creating,setCreating]=useState(false);
@@ -253,6 +253,6 @@ function PromptModal({initial,categories,close,saved}:{initial?:Prompt;categorie
     <ModalActions busy={busy} close={close} label="Save prompt"/>
   </form></Modal>;
 }
-function Field({label,children,full=false}:{label:string;children:React.ReactNode;full?:boolean}){return <label className={full?"sm:col-span-2 block text-sm font-semibold":"block text-sm font-semibold"}>{label}<span className="mt-1.5 block">{children}</span></label>}
-function Modal({title,children,close}:{title:string;children:React.ReactNode;close:()=>void}){return <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 p-4"><div className="max-h-[92vh] w-full max-w-3xl overflow-auto rounded-2xl bg-white shadow-2xl"><div className="flex items-center justify-between border-b p-4"><h2 className="font-black">{title}</h2><button onClick={close} className="rounded-lg p-2 hover:bg-gray-100"><X size={18}/></button></div>{children}</div></div>}
+function Field({label,children,full=false}:{label:string;children:ReactNode;full?:boolean}){return <label className={full?"sm:col-span-2 block text-sm font-semibold":"block text-sm font-semibold"}>{label}<span className="mt-1.5 block">{children}</span></label>}
+function Modal({title,children,close}:{title:string;children:ReactNode;close:()=>void}){return <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 p-4"><div className="max-h-[92vh] w-full max-w-3xl overflow-auto rounded-2xl bg-white shadow-2xl"><div className="flex items-center justify-between border-b p-4"><h2 className="font-black">{title}</h2><button onClick={close} className="rounded-lg p-2 hover:bg-gray-100"><X size={18}/></button></div>{children}</div></div>}
 function ModalActions({busy,close,label}:{busy:boolean;close:()=>void;label:string}){return <div className="flex justify-end gap-2 sm:col-span-2"><button type="button" onClick={close} className="rounded-xl bg-gray-100 px-4 py-2.5 text-sm font-bold">Cancel</button><button type="submit" disabled={busy} className="rounded-xl bg-gray-950 px-4 py-2.5 text-sm font-bold text-white disabled:opacity-50">{busy?"Saving…":label}</button></div>}

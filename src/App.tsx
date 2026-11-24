@@ -25,6 +25,7 @@ import AuditReportModal from "./components/AuditReportModal";
 import FeedbackModal from "./components/FeedbackModal";
 import PromptAdminPage from "./pages/PromptAdminPage";
 import VoiceIDPromo from "./components/VoiceIDPromo";
+import AIAgent from "./components/AIAgent";
 
 // Lazy-load sub-pages for lightning-fast bundles
 import LandingPage from "./pages/LandingPage";
@@ -85,6 +86,8 @@ interface LandingPageProps {
   clearHistory: () => void;
   handleHelpfulFeedback: (helpful: boolean) => void;
   triggerToast: (msg: string, type?: "success" | "info" | "warning") => void;
+  onOpenAgent?: () => void;
+  onStartVoice?: () => void;
 }
 
 function LandingPageSelector(props: Omit<LandingPageProps, "page">) {
@@ -126,6 +129,8 @@ function AppContent() {
   const [isDragging, setIsDragging] = useState(false);
   const [reportOpen, setReportOpen] = useState(false);
   const [expandedCard, setExpandedCard] = useState<string | null>(null);
+  const [agentOpen, setAgentOpen] = useState(false);
+  const [startVoiceSignal, setStartVoiceSignal] = useState(0);
 
   // Theme Sync
   const [theme, setTheme] = useState<"light" | "dark" | "system">(() => {
@@ -532,8 +537,9 @@ function AppContent() {
       .replace(/'/g, "&#39;");
 
   // Multi-format exporter
-  const handleExport = (format: "txt" | "md" | "html" | "docx") => {
-    if (!inputText) {
+  const handleExport = (format: "txt" | "md" | "html" | "docx", overrideText?: string) => {
+    const textToExport = typeof overrideText === "string" ? overrideText : inputText;
+    if (!textToExport) {
       triggerToast("No text available to export.", "warning");
       return;
     }
@@ -542,10 +548,10 @@ function AppContent() {
     let filename = `repaired-document-${new Date().toISOString().slice(0, 10)}`;
 
     if (format === "txt") {
-      file = new Blob([inputText], { type: "text/plain;charset=utf-8" });
+      file = new Blob([textToExport], { type: "text/plain;charset=utf-8" });
       filename += ".txt";
     } else if (format === "md") {
-      file = new Blob([inputText], { type: "text/markdown;charset=utf-8" });
+      file = new Blob([textToExport], { type: "text/markdown;charset=utf-8" });
       filename += ".md";
     } else if (format === "html") {
       const htmlContent = `<!DOCTYPE html>
@@ -562,7 +568,7 @@ function AppContent() {
 </head>
 <body>
   <div class="card">
-    ${inputText.split('\n').map(p => p.trim() ? `<p>${escapeHtml(p.trim())}</p>` : '<br>').join('\n')}
+    ${textToExport.split('\n').map(p => p.trim() ? `<p>${escapeHtml(p.trim())}</p>` : '<br>').join('\n')}
   </div>
 </body>
 </html>`;
@@ -572,7 +578,7 @@ function AppContent() {
       const docContent = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
 <head><title>Repaired Document</title></head>
 <body style="font-family: Arial, sans-serif; padding: 40px; line-height: 1.5;">
-  ${inputText.split('\n').map(p => p.trim() ? `<p>${escapeHtml(p.trim())}</p>` : '<p>&nbsp;</p>').join('')}
+  ${textToExport.split('\n').map(p => p.trim() ? `<p>${escapeHtml(p.trim())}</p>` : '<p>&nbsp;</p>').join('')}
 </body>
 </html>`;
       file = new Blob([docContent], { type: "application/msword;charset=utf-8" });
@@ -662,6 +668,8 @@ function AppContent() {
                     clearHistory={clearHistory}
                     handleHelpfulFeedback={handleHelpfulFeedback}
                     triggerToast={triggerToast}
+                    onOpenAgent={() => setAgentOpen(true)}
+                    onStartVoice={() => setStartVoiceSignal((s) => s + 1)}
                   />
                 }
               />
@@ -702,6 +710,8 @@ function AppContent() {
                     clearHistory={clearHistory}
                     handleHelpfulFeedback={handleHelpfulFeedback}
                     triggerToast={triggerToast}
+                    onOpenAgent={() => setAgentOpen(true)}
+                    onStartVoice={() => setStartVoiceSignal((s) => s + 1)}
                   />
                 }
               />
@@ -740,6 +750,39 @@ function AppContent() {
         onClose={() => setFeedbackModalOpen(false)}
         originalText={originalText}
         repairMode={currentLandingPage}
+        triggerToast={triggerToast}
+      />
+
+      {/* Persistent Voice & Text AI Agent */}
+      <AIAgent
+        isOpen={agentOpen}
+        setIsOpen={setAgentOpen}
+        startVoiceSignal={startVoiceSignal}
+        activePage={activePage}
+        currentLandingPage={currentLandingPage}
+        inputText={inputText}
+        setInputText={setInputText}
+        originalText={originalText}
+        setOriginalText={setOriginalText}
+        analysis={analysis}
+        setAnalysis={setAnalysis}
+        setRepairSummary={setRepairSummary}
+        isRepaired={isRepaired}
+        setIsRepaired={setIsRepaired}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        compareMode={compareMode}
+        setCompareMode={setCompareMode}
+        caseMode={caseMode}
+        setCaseMode={setCaseMode}
+        theme={theme}
+        setTheme={setTheme}
+        history={history}
+        setHistory={setHistory}
+        loadHistoryItem={loadHistoryItem}
+        clearHistory={clearHistory}
+        setReportOpen={setReportOpen}
+        handleExport={handleExport}
         triggerToast={triggerToast}
       />
     </div>

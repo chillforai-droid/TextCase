@@ -57,6 +57,8 @@ interface LandingPageProps {
   clearHistory: () => void;
   handleHelpfulFeedback: (helpful: boolean) => void;
   triggerToast: (msg: string, type?: "success" | "info" | "warning") => void;
+  onOpenAgent?: () => void;
+  onStartVoice?: () => void;
 }
 
 export default function LandingPage({
@@ -91,6 +93,8 @@ export default function LandingPage({
   clearHistory,
   handleHelpfulFeedback,
   triggerToast,
+  onOpenAgent,
+  onStartVoice,
 }: LandingPageProps) {
 
   const scrollToEditor = () => {
@@ -103,7 +107,7 @@ export default function LandingPage({
   return (
     <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8" id={`landing-page-${page.id}`}>
       {/* Hero Section */}
-      <Hero page={page} />
+      <Hero page={page} onOpenAgent={onOpenAgent} onStartVoice={onStartVoice} />
 
       {/* Tool Section: Interactive Workspace Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mt-6" id="interactive-tool-grid">

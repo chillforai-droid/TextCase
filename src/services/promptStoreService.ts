@@ -47,5 +47,5 @@ export async function getPublishedPrompt(slug: string): Promise<PromptItem | nul
     .maybeSingle();
 
   if (error) throw error;
-  return (data || null) as PromptItem | null;
+  return (data || null) as unknown as PromptItem | null;
 }
