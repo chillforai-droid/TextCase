@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { X, Send, AlertTriangle } from "lucide-react";
-import { useFeedback } from "../hooks/useFeedback";
+import { feedbackService } from "../services/feedbackService";
 
 interface FeedbackModalProps {
   isOpen: boolean;
@@ -17,7 +17,6 @@ export default function FeedbackModal({
   repairMode,
   triggerToast
 }: FeedbackModalProps) {
-  const { addFeedback } = useFeedback();
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -49,7 +48,7 @@ export default function FeedbackModal({
         ? "Mobile"
         : "Desktop";
 
-      await addFeedback({
+      await feedbackService.create({
         name: "Automatic Repair Auditor",
         feedback_type: "Repair Failed",
         category: "General",

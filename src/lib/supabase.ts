@@ -12,6 +12,12 @@ if (!supabaseUrl || !supabaseAnonKey) {
   );
 }
 
+export const isSupabaseConfigured = Boolean(
+  supabaseUrl &&
+    supabaseAnonKey &&
+    !supabaseUrl.includes("placeholder-project.supabase.co")
+);
+
 // Fallback to avoid throwing fatal compile/startup errors in the browser if not configured yet
 export const supabase = createClient(
   supabaseUrl || "https://placeholder-project.supabase.co",

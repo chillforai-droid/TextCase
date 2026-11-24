@@ -1,8 +1,15 @@
-import { supabase } from "../lib/supabase";
+import { isSupabaseConfigured, supabase } from "../lib/supabase";
 import { RepairSession } from "../types/repairSession";
 
 export const repairSessionService = {
   async create(session: Omit<RepairSession, "id" | "created_at">): Promise<RepairSession> {
+    if (!isSupabaseConfigured) {
+      return {
+        ...session,
+        id: session.session_id,
+        created_at: new Date().toISOString(),
+      };
+    }
     const { data, error } = await supabase
       .from("repair_sessions")
       .insert([session])
@@ -14,6 +21,9 @@ export const repairSessionService = {
   },
 
   async get(id: string): Promise<RepairSession> {
+    if (!isSupabaseConfigured) {
+      throw new Error("Repair sessions database is not configured.");
+    }
     const { data, error } = await supabase
       .from("repair_sessions")
       .select("*")
@@ -25,6 +35,9 @@ export const repairSessionService = {
   },
 
   async getAll(): Promise<RepairSession[]> {
+    if (!isSupabaseConfigured) {
+      return [];
+    }
     const { data, error } = await supabase
       .from("repair_sessions")
       .select("*")

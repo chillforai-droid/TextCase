@@ -3,7 +3,7 @@ import {
   BarChart3, BookOpen, CheckCircle2, Edit3, FileText, LayoutDashboard,
   LogOut, Menu, Plus, RefreshCw, Search, ShieldCheck, Trash2, X
 } from "lucide-react";
-import { supabase } from "../lib/supabase";
+import { isSupabaseConfigured, supabase } from "../lib/supabase";
 import type { Category, Prompt } from "../types/promptAdmin";
 import { slugify, csvTags, formatAdminDate } from "../utils/promptAdmin";
 
@@ -40,7 +40,11 @@ export default function PromptAdminPage() {
 
   useEffect(() => {
     let mounted = true;
-    if (!supabase) return;
+    if (!isSupabaseConfigured || !supabase) {
+      setAuthorized(false);
+      setLoading(false);
+      return;
+    }
     supabase.auth.getSession().then(async ({ data }) => {
       if (!mounted) return;
       setSession(data.session);

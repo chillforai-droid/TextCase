@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Mail, CheckCircle } from "lucide-react";
-import { supabase } from "../lib/supabase";
+import { isSupabaseConfigured, supabase } from "../lib/supabase";
 
 interface ContactFormProps {
   triggerToast: (msg: string, type?: "success" | "info" | "warning") => void;
@@ -30,6 +30,10 @@ export default function ContactForm({ triggerToast }: ContactFormProps) {
     setIsSubmitting(true);
 
     try {
+      if (!isSupabaseConfigured) {
+        triggerToast("Contact form database is not configured in this environment.", "warning");
+        return;
+      }
       const { error } = await supabase
         .from("user_inquiries")
         .insert({

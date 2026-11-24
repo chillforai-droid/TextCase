@@ -1,7 +1,8 @@
-import { supabase } from "../lib/supabase";
+import { isSupabaseConfigured, supabase } from "../lib/supabase";
 import type { PromptCategory, PromptItem } from "../types";
 
 export async function getPublishedPromptCategories(): Promise<PromptCategory[]> {
+  if (!isSupabaseConfigured) return [];
   const { data, error } = await supabase
     .from("prompt_categories")
     .select("id,name,slug,description,seo_title,seo_description,is_published,sort_order")
@@ -14,6 +15,7 @@ export async function getPublishedPromptCategories(): Promise<PromptCategory[]> 
 }
 
 export async function getPublishedPromptCategory(slug: string): Promise<PromptCategory | null> {
+  if (!isSupabaseConfigured) return null;
   const { data, error } = await supabase
     .from("prompt_categories")
     .select("id,name,slug,description,seo_title,seo_description,is_published,sort_order")
@@ -26,6 +28,7 @@ export async function getPublishedPromptCategory(slug: string): Promise<PromptCa
 }
 
 export async function getPublishedPromptsByCategory(categoryId: string): Promise<PromptItem[]> {
+  if (!isSupabaseConfigured) return [];
   const { data, error } = await supabase
     .from("prompts")
     .select("id,category_id,title,slug,short_description,prompt_text,use_case,tags,is_published,sort_order,created_at,updated_at")
@@ -39,6 +42,7 @@ export async function getPublishedPromptsByCategory(categoryId: string): Promise
 }
 
 export async function getPublishedPrompt(slug: string): Promise<PromptItem | null> {
+  if (!isSupabaseConfigured) return null;
   const { data, error } = await supabase
     .from("prompts")
     .select("id,category_id,title,slug,short_description,prompt_text,use_case,tags,is_published,sort_order,created_at,updated_at,category:prompt_categories(name,slug)")

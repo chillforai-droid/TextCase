@@ -1,8 +1,11 @@
-import { supabase } from "../lib/supabase";
+import { isSupabaseConfigured, supabase } from "../lib/supabase";
 import { RoadmapItem } from "../types/roadmap";
 
 export const roadmapService = {
   async create(item: Omit<RoadmapItem, "id" | "created_at">): Promise<RoadmapItem> {
+    if (!isSupabaseConfigured) {
+      throw new Error("Roadmap database is not configured.");
+    }
     const { data, error } = await supabase
       .from("roadmap")
       .insert([item])
@@ -14,6 +17,9 @@ export const roadmapService = {
   },
 
   async getAll(): Promise<RoadmapItem[]> {
+    if (!isSupabaseConfigured) {
+      return [];
+    }
     const { data, error } = await supabase
       .from("roadmap")
       .select("*")

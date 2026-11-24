@@ -1,8 +1,11 @@
-import { supabase } from "../lib/supabase";
+import { isSupabaseConfigured, supabase } from "../lib/supabase";
 import { Feedback } from "../types/feedback";
 
 export const feedbackService = {
   async create(feedback: Omit<Feedback, "id" | "created_at" | "updated_at">): Promise<Feedback> {
+    if (!isSupabaseConfigured) {
+      throw new Error("Feedback database is not configured in this environment.");
+    }
     const { data, error } = await supabase
       .from("feedback")
       .insert([feedback])
@@ -14,6 +17,9 @@ export const feedbackService = {
   },
 
   async getAllPublic(): Promise<Feedback[]> {
+    if (!isSupabaseConfigured) {
+      return [];
+    }
     const { data, error } = await supabase
       .from("feedback")
       .select("*")
@@ -21,13 +27,16 @@ export const feedbackService = {
       .order("created_at", { ascending: false });
 
     if (error) {
-      console.error("Error fetching public feedback:", error);
-      throw error;
+      console.warn("Could not fetch public feedback:", error);
+      return [];
     }
     return data || [];
   },
 
   async update(id: string, updates: Partial<Feedback>): Promise<Feedback> {
+    if (!isSupabaseConfigured) {
+      throw new Error("Feedback database is not configured in this environment.");
+    }
     const { data, error } = await supabase
       .from("feedback")
       .update(updates)
@@ -40,6 +49,9 @@ export const feedbackService = {
   },
 
   async delete(id: string): Promise<void> {
+    if (!isSupabaseConfigured) {
+      throw new Error("Feedback database is not configured in this environment.");
+    }
     const { error } = await supabase
       .from("feedback")
       .delete()
@@ -49,6 +61,9 @@ export const feedbackService = {
   },
 
   async incrementLikes(id: string): Promise<Feedback> {
+    if (!isSupabaseConfigured) {
+      throw new Error("Feedback database is not configured in this environment.");
+    }
     const { data: current, error: getError } = await supabase
       .from("feedback")
       .select("likes")

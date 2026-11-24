@@ -1,8 +1,11 @@
-import { supabase } from "../lib/supabase";
+import { isSupabaseConfigured, supabase } from "../lib/supabase";
 import { ChangelogItem } from "../types/changelog";
 
 export const changelogService = {
   async create(item: Omit<ChangelogItem, "id" | "created_at">): Promise<ChangelogItem> {
+    if (!isSupabaseConfigured) {
+      throw new Error("Changelog database is not configured.");
+    }
     const { data, error } = await supabase
       .from("changelog")
       .insert([item])
@@ -14,6 +17,9 @@ export const changelogService = {
   },
 
   async getAll(): Promise<ChangelogItem[]> {
+    if (!isSupabaseConfigured) {
+      return [];
+    }
     const { data, error } = await supabase
       .from("changelog")
       .select("*")
